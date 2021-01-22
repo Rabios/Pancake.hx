@@ -187,9 +187,9 @@ class Graphics {
                         ctx2d.canvas.height = Canvas.compatible_height;
                    }
                 }
-           }
+            }
         };
-	#end
+	    #end
     }
 	
     #if PANCAKE_WEBGL

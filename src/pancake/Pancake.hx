@@ -1,6 +1,6 @@
 // Written by Rabia Alhaffar in 24/December/2020
 // Pancake port for Haxe, https://github.com/Rabios/Pancake
-// Latest Version: 21/January/2021
+// Latest Version: 22/January/2021
 /*
 All thanks to everyone in Haxe discord server, Including:
     - @Gama11
@@ -13,6 +13,7 @@ All thanks to everyone in Haxe discord server, Including:
     - @SunDaw
     - @Nanjizal
     - @Nakato
+	- @AlexHaxe
 */
 /*
 

@@ -26,9 +26,9 @@ class Replay {
     
     public function save(replay_index: Int, ?global: Dynamic): Void {
         var o: Dynamic = {};
-        for (key in Reflect.fields(pancake.Input)) {
-            if (!Reflect.isFunction(Reflect.field(pancake.Input, key))) {
-                Reflect.setProperty(o, key, Reflect.field(pancake.Input, key));
+        for (key in Reflect.fields(Pancake.input)) {
+            if (!Reflect.isFunction(Reflect.field(Pancake.input, key))) {
+                Reflect.setProperty(o, key, Reflect.field(Pancake.input, key));
             }
         }
         if (global != null) Reflect.setProperty(o, "global", global);
@@ -44,7 +44,7 @@ class Replay {
         if (!Pancake.replays[replay_index].finished) {
             if (Pancake.replays[replay_index].frames[Pancake.replays[replay_index].current] != null) {
                 for (key in Reflect.fields(Pancake.replays[replay_index].frames[Pancake.replays[replay_index].current])) {
-                    Reflect.setField(pancake.Input, key, Reflect.field(Pancake.replays[replay_index].frames[Pancake.replays[replay_index].current], key));
+                    Reflect.setField(Pancake.input, key, Reflect.field(Pancake.replays[replay_index].frames[Pancake.replays[replay_index].current], key));
                 }
                 
                 if (Pancake.replays[replay_index].frames[Pancake.replays[replay_index].current].global != null) {

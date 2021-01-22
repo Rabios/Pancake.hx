@@ -1,4 +1,3 @@
-# Modules, Comment one of them to disable them...
 --define PANCAKE_GRAPHICS
 --define PANCAKE_CANVAS2D
 --define PANCAKE_TIMERS
