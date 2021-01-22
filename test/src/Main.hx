@@ -11,8 +11,7 @@ class Main
     public static function main(): Void {
         Pancake.graphics.loadImage("pancake.png", 0);
         Pancake.graphics.loadImage("haxe.png", 1);
-        
-        Pancake.game.title("GAME!");
+		
         Pancake.canvas.create(800, 600, 0);
         Pancake.context.create(0, 0);
         Pancake.graphics.useContext(0);
