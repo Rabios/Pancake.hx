@@ -77,8 +77,8 @@ Then you can write HTML file, For example:
     <meta charset="utf-8">
 </head>
 <body>
-    <!-- NOTE: You should put JavaScript of Pancake inside body, That's to not throw errors... -->
-    <script src="test.js"></script>
+    <!-- NOTE: You should put generated JavaScript inside body, That's to not throw errors... -->
+    <script src="game.js"></script>
 </body>
 </html>
 ```
