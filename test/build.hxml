@@ -1,5 +1,5 @@
---define PANCAKE_GRAPHICS
 --define PANCAKE_CANVAS2D
+--define PANCAKE_GRAPHICS
 --define PANCAKE_TIMERS
 
 --class-path src
