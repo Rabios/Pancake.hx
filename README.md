@@ -57,8 +57,8 @@ class Main
         
         function game() {
             Pancake.graphics.clear();
-			Pancake.graphics.color(Pancake.graphics.random.RGBA());
-			Pancake.graphics.rect(0, 0, Pancake.canvases[0].width, Pancake.canvases[0].height);
+            Pancake.graphics.color(Pancake.graphics.random.RGBA());
+            Pancake.graphics.rect(0, 0, Pancake.canvases[0].width, Pancake.canvases[0].height);
         }
         
         var gameloop: Int = Pancake.timers.timer(game, 60);
@@ -119,7 +119,7 @@ import pancake.*;
 class Main 
 {
     public static function main(): Void {
-	    Pancake.script.load("game.js");
+        Pancake.script.load("game.js");
     }
 }
 ```
