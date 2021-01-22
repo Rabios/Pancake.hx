@@ -1,0 +1,26 @@
+# Modules, Comment one of them to disable them...
+--define PANCAKE_CANVAS2D      # Backend, Can be also WebGL via --define PANCAKE_WEBGL
+--define PANCAKE_GRAPHICS
+--define PANCAKE_VIDEO         # NOTE: Requires definition of PANCAKE_GRAPHICS
+--define PANCAKE_SPRITE        # NOTE: Requires definition of PANCAKE_GRAPHICS
+--define PANCAKE_GIF           # NOTE: Requires definition of PANCAKE_GRAPHICS
+--define PANCAKE_SPRITEFONTS   # NOTE: Requires definition of PANCAKE_GRAPHICS
+--define PANCAKE_AUDIO
+--define PANCAKE_INPUT
+--define PANCAKE_DEVICE
+--define PANCAKE_OS
+--define PANCAKE_REPLAY        # NOTE: Requires definition of PANCAKE_INPUT
+--define PANCAKE_UTIL
+--define PANCAKE_PHYSICS
+--define PANCAKE_STORAGE
+--define PANCAKE_TIMERS
+--define PANCAKE_SCRIPT
+--define PANCAKE_BROWSER
+--define PANCAKE_XHR
+--define PANCAKE_GAME
+--define PANCAKE_CONTENT
+
+--class-path src
+--dce std
+pancake.Pancake
+--js bin/Pancake.js
