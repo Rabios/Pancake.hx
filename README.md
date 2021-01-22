@@ -32,7 +32,7 @@ Create new project anywhere, In your `build.hxml` you can include Pancake with m
 
 Your `Main.hx` in `src` folder can be like this:
 
-```
+```hx
 // Main.hx
 package;
 
@@ -124,7 +124,8 @@ class Main
 }
 ```
 
-```game.js
+```js
+// game.js
 pancake.canvas.create(800, 600, 0);
 pancake.context.create(0, 0);
 pancake.graphic.useContext(0);
