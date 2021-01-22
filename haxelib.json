@@ -3,7 +3,7 @@
     "url"          : "https://github.com/Rabios/Pancake.hx",
     "license"      : "MIT",
     "tags"         : [ "javascript", "js", "keyboard", "webgl", "mobile", "canvas", "inspiration", "touch", "localstorage", "desktop", "xbox", "audio", "mouse", "collision-detection", "game-framework", "playstation", "canvas2d", "gamepad-api", "successor" ],
-    "description"  : "Haxe port of awesome HTML5 game framework Pancake to Haxe!",
+    "description"  : "Haxe port of awesome HTML5 game framework Pancake!",
     "version"      : "1.0.0",
     "releasenote"  : "See https://github.com/Rabios/Pancake.hx/blob/master/docs/changelog.md",
     "classPath"    : "src",
