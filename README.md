@@ -33,7 +33,7 @@ Create new project anywhere, In your `build.hxml` you can include Pancake with m
 
 Your `Main.hx` in `src` folder can be like this:
 
-```
+```hx
 // Main.hx
 package;
 
@@ -127,7 +127,6 @@ You can include or remove parts of Pancake you don't need, You can also specify 
 --dce std
 pancake.Pancake
 --js bin/Pancake.js
-
 ```
 
 ### Differences of Pancake JavaScript
@@ -158,7 +157,8 @@ class Main
 }
 ```
 
-```game.js
+```js
+// game.js
 pancake.canvas.create(800, 600, 0);
 pancake.context.create(0, 0);
 pancake.graphic.useContext(0);
