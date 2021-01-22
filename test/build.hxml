@@ -1,0 +1,10 @@
+--define PANCAKE_GRAPHICS
+--define PANCAKE_CANVAS2D
+--define PANCAKE_TIMERS
+--define PANCAKE_GAME
+
+--class-path src
+pancake.Pancake
+--dce std
+--js bin/Pancake.js
+--main Main

@@ -1,0 +1,389 @@
+package pancake;
+
+import js.html.MouseEvent;
+import js.html.KeyboardEvent;
+import js.html.Gamepad;
+import js.html.TouchEvent;
+import js.html.WheelEvent;
+import js.Browser.window;
+import js.Browser.navigator;
+import js.Browser.document;
+
+/**
+ * ...
+ * @author Rabia Haffar
+ */
+#if js.Lib.eval("Accelerometer") != null
+@:native("Accelerometer")
+extern class Accelerometer {
+    public function new(properties: Dynamic): Void {};
+    public function addEventListener(event: String, handler: Any): Void;
+    public function start(): Any;
+}
+#end
+
+class Input {
+    public var GAMEPAD_ANALOG_UP: Float = -0.1;
+    public var GAMEPAD_ANALOG_DOWN: Float = 0.1;
+    public var GAMEPAD_ANALOG_LEFT: Float = 0.1;
+    public var GAMEPAD_ANALOG_RIGHT: Float = -0.1;
+    public var GAMEPAD_MOVE_ANALOG: Int = 1;
+    public var GAMEPAD_CAMERA_ANALOG: Int = 2;
+    public var latest_key_down: Int = -1;
+    public var latest_key_up: Int = -1;
+    public var latest_mouse_button_down: Int = -1;
+    public var latest_mouse_button_up: Int = -1;
+    public var click: Bool = false;
+    public var touchdown: Bool = false;
+    public var tap: Bool = false;
+    public var mouse_x: Int = 0;
+    public var mouse_y: Int = 0;
+    public var touch_x: Int = 0;
+    public var touch_y: Int = 0;
+    public var wheel_x: Float = 0;
+    public var wheel_y: Float = 0;
+    public var wheel_z: Float = 0;
+    public var accel_x: Float = 0;
+    public var accel_y: Float = 0;
+    public var accel_z: Float = 0;
+    public var wheel_up: Bool = false;
+    public var wheel_down: Bool = false;
+    public var wheel_left: Bool = false;
+    public var wheel_right: Bool = false;
+    public var swipe_start_time: Float = 0;
+    public var swipe_finish_time: Float = 0;
+    public var swipe_start_x: Int = 0;
+    public var swipe_start_y: Int = 0;
+    public var swipe_finish_x: Int = 0;
+    public var swipe_finish_y: Int = 0;
+    public var swipe_direction: String = "";
+    public var gamepad_move_horizontal_direction: String = "";
+    public var gamepad_move_vertical_direction: String = "";
+    public var gamepad_camera_horizontal_direction: String = "";
+    public var gamepad_camera_vertical_direction: String = "";
+    #if js.Lib.eval("Accelerometer") != null
+    public var accelerometer: Accelerometer = null;
+    #end
+    public var touches: Array<Dynamic>;
+    
+    private function addEvent(s: String, f: haxe.Constraints.Function, ?options:haxe.extern.EitherType<js.html.AddEventListenerOptions, Bool>, ?wantsUntrusted:Bool): Void {
+        return document.addEventListener(s, f, options);
+    }
+    
+    public function new(): Void {
+        #if js.Lib.eval("Accelerometer") != null
+        if (Lib.eval("Accelerometer") != null) {
+            accelerometer = new Accelerometer({ frequency: 60 });
+            accelerometer.addEventListener("reading", function(e) {
+                accel_x = e.x;
+                accel_y = e.y;
+                accel_z = e.z;
+            });
+            accelerometer.start();
+        }
+        #end
+        
+        addEvent("mousedown", function (e: MouseEvent) {
+            swipe_start_x = (e.clientX != null) ? e.clientX : e.pageX;
+            swipe_start_y = (e.clientY != null) ? e.clientY : e.pageY;
+            swipe_start_time = window.performance.now();
+        });
+        
+        addEvent("mouseup", function(e: MouseEvent) {
+            mouse_x = (e.clientX != null) ? e.clientX : e.pageX;
+            mouse_y = (e.clientY != null) ? e.clientY : e.pageY;
+            swipe_finish_x = mouse_x - swipe_start_x;
+            swipe_finish_y = mouse_y - swipe_start_y;
+            swipe_finish_time = window.performance.now() - swipe_start_time;
+            if (swipe_finish_time <= 1000) {
+                function f(a: Float): Float { return Math.abs(a); }
+                if (f(swipe_finish_x) >= 100 && f(swipe_finish_y) <= 300) {
+                    if (swipe_finish_x < 0) swipe_direction = "LEFT";
+                    else swipe_direction = "RIGHT";
+                }
+                else if (f(swipe_finish_y) >= 100 && f(swipe_finish_x) <= 300) {
+                    if (swipe_finish_y < 0) swipe_direction = "UP";
+                    else swipe_direction = "DOWN";
+                }
+            }
+        });
+        
+        addEvent("mousemove", function(e: MouseEvent) {
+            mouse_x = (e.clientX != null) ? e.clientX : e.pageX;
+            mouse_y = (e.clientY != null) ? e.clientY : e.pageY;
+        });
+        
+        addEvent("touchstart", function(e: TouchEvent) {
+            for (i in 0...e.changedTouches.length) {
+                touches[i] = {
+                    x: (e.changedTouches[i].clientX != null) ? e.changedTouches[i].clientX : e.changedTouches[i].pageX,
+                    y: (e.changedTouches[i].clientY != null) ? e.changedTouches[i].clientY : e.changedTouches[i].pageY,
+                    swipe_start_x: e.changedTouches[i].pageX,
+                    swipe_start_y: e.changedTouches[i].pageY,
+                    swipe_start_time: window.performance.now(),
+                    swipe_direction: "",
+                    tap: true,
+                    touchdown: false,
+                }
+            }
+            touch_x = touches[0].x;
+            touch_y = touches[0].y;
+            tap = true;
+            touchdown = false;
+            e.preventDefault();
+        }, false);
+        
+        addEvent("touchend", function(e: TouchEvent) {
+            for (i in 0...e.changedTouches.length) {
+                touches[i].x = (e.changedTouches[i].clientX != null) ? e.changedTouches[i].clientX : e.changedTouches[i].pageX;
+                touches[i].y = (e.changedTouches[i].clientY != null) ? e.changedTouches[i].clientY : e.changedTouches[i].pageY;
+                touches[i].swipe_finish_x = e.changedTouches[i].pageX - touches[i].swipe_start_x;
+                touches[i].swipe_finish_y = e.changedTouches[i].pageY - touches[i].swipe_start_y;
+                touches[i].swipe_finish_time = window.performance.now() - touches[i].swipe_start_time;
+                touches[i].tap = true;
+                touches[i].touchdown = false;
+                if (touches[i].swipe_finish_time <= 1000) {
+                    function f(a: Float): Float { return Math.abs(a); }
+                    if (f(touches[i].swipe_finish_x) >= 100 && f(touches[i].swipe_finish_y) <= 300) {
+                        if (touches[i].swipe_finish_x < 0) touches[i].swipe_direction = "LEFT";
+                        else touches[i].swipe_direction = "RIGHT";
+                    }
+                    else if (f(touches[i].swipe_finish_y) >= 100 && f(touches[i].swipe_finish_x) <= 300) {
+                        if (touches[i].swipe_finish_y < 0) touches[i].swipe_direction = "UP";
+                        else touches[i].swipe_direction = "DOWN";
+                    }
+                }
+            }
+            touch_x = touches[0].x;
+            touch_y = touches[0].y;
+            tap = true;
+            touchdown = false;
+            e.preventDefault();
+        }, false);
+        
+        addEvent("touchcancel", function(e: TouchEvent) {
+            for (i in 0...e.changedTouches.length) {
+                touches[i].tap = false;
+                touches[i].touchdown = false;
+            }
+            tap = false;
+            touchdown = false;
+            e.preventDefault();
+        }, false);
+        
+        addEvent("touchmove", function(e: TouchEvent) {
+            for (i in 0...e.changedTouches.length) {
+                touches[i].x = (e.changedTouches[i].clientX != null) ? e.changedTouches[i].clientX : e.changedTouches[i].pageX;
+                touches[i].y = (e.changedTouches[i].clientY != null) ? e.changedTouches[i].clientY : e.changedTouches[i].pageY;
+                touches[i].touchdown = true;
+            }
+            touch_x = touches[0].x;
+            touch_y = touches[0].y;
+            touchdown = true;
+            e.preventDefault();
+        }, false);
+        
+        addEvent("click", function() {
+            click = true;
+        });
+        
+        addEvent("mousedown", function(e: MouseEvent) {
+            latest_mouse_button_down = e.button;
+            click = false;
+        });
+        
+        addEvent("mouseup", function(e: MouseEvent) {
+            latest_mouse_button_up = e.button;
+            click = false;
+        });
+        
+        addEvent("keydown", function(e: KeyboardEvent) {
+            latest_key_down = (e.which != null ? e.which : e.keyCode);
+        });
+
+        addEvent("keyup", function(e: KeyboardEvent) {
+            latest_key_up = (e.which != null ? e.which : e.keyCode);
+        });
+        
+        addEvent("wheel", function(e: WheelEvent) {
+            wheel_x = e.deltaX;
+            wheel_y = e.deltaY;
+            wheel_z = e.deltaZ;
+            
+            if (wheel_x > 0) {
+                wheel_left = false;
+                wheel_right = true;
+            } else if (wheel_x < 0) {
+                wheel_left = true;
+                wheel_right = false;
+            } else if (wheel_x == 0) {
+                wheel_left = wheel_right = false;
+            }
+    
+            if (wheel_y > 0) {
+                wheel_up = false;
+                wheel_down = true;
+            } else if (wheel_y < 0) {
+                wheel_up = true;
+                wheel_down = false;
+            } else if (wheel_y == 0) {
+                wheel_up = wheel_down = false;
+            }
+        });
+    }
+    
+    public function mousedown(button: Int): Bool {
+        return (latest_mouse_button_down == button);
+    }
+        
+    public function mouseup(button: Int): Bool {
+        return (latest_mouse_button_up == button);
+    }
+        
+    public function swipe(direction: String, ?finger: Int = 0): Bool {
+        if (touches[finger] == null) {
+            return (swipe_direction == direction);
+        } else {
+            return (touches[finger].swipe_direction == direction);
+        }
+    }
+    
+    public function keydown(key: Int): Bool {
+        return (latest_key_down == key);
+    }
+    
+    public function keyup(key: Int): Bool {
+        return (latest_key_up == key);
+    }
+    
+    private function cursorState(state: String, ?canvas_index: Int = 0): Void {
+        document.body.style.height = "100%";
+        document.getElementsByTagName("html")[0].style.height = "100%";
+        Pancake.canvases[canvas_index != null ? canvas_index : 0].style.cursor = state;
+        #if PANCAKE_WEBGL
+        if (Graphics.ctx2d_enabled) Graphics.ctx2d.canvas.style.cursor = state;
+        #end
+        document.body.style.height = "auto";
+        document.getElementsByTagName("html")[0].style.height = "auto";
+    }
+    
+    public function hideCursor(?canvas_index: Int = 0): Void {
+        cursorState("none", canvas_index);
+    }
+    
+    public function showCursor(?canvas_index: Int = 0): Void {
+        cursorState("auto", canvas_index);
+    }
+    
+    public function setCursor(css_style: String, ?canvas_index: Int = 0): Void {
+        cursorState(css_style, canvas_index);
+    }
+    
+    public function lockPointer(): Void {
+        if (Graphics.canvas.requestPointerLock != null) Graphics.canvas.requestPointerLock();
+        if ($type(document.pointerLockElement) == $type(Graphics.canvas)) Graphics.canvas.requestPointerLock();
+    }
+    
+    public function unlockPointer(): Void {
+        document.exitPointerLock();
+    }
+        
+    public function gamepadConnected(gamepad_index: Int): Bool {
+        return (window.navigator.getGamepads()[gamepad_index] != null);
+    }
+    
+    public function gamepadID(gamepad_index: Int): String {
+        return (navigator.getGamepads()[gamepad_index].id);
+    }
+    
+    public function gamepadButtonPressed(gamepad_index: Int, gamepad_button: Int): Bool {
+        return (navigator.getGamepads()[gamepad_index].buttons[gamepad_button].pressed);
+    }
+    
+    public function gamepadButtonTouched(gamepad_index: Int, gamepad_button: Int): Bool {
+        return (navigator.getGamepads()[gamepad_index].buttons[gamepad_button].touched);
+    }
+    
+    // DEV NOTES: This works like pointer function for storing gamepad info in it's variables...
+    private function gamepadMovement(gamepad_index: Int, gamepad_analog: Int, analog_direction: Float): Void {
+        var gamepad: Gamepad = navigator.getGamepads()[gamepad_index];
+        if (gamepad != null) {
+            if (gamepad_analog == GAMEPAD_MOVE_ANALOG) {
+                if (gamepad.axes[1] <= analog_direction) gamepad_move_vertical_direction = "UP";
+                if (gamepad.axes[1] >= analog_direction) gamepad_move_vertical_direction = "DOWN";
+                if (gamepad.axes[0] <= analog_direction) gamepad_move_horizontal_direction = "LEFT";
+                if (gamepad.axes[0] >= analog_direction) gamepad_move_horizontal_direction = "RIGHT";
+            }
+            
+            if (gamepad_analog == GAMEPAD_CAMERA_ANALOG) {
+                if (gamepad.axes[3] <= analog_direction) gamepad_camera_vertical_direction = "UP";
+                if (gamepad.axes[3] >= analog_direction) gamepad_camera_vertical_direction = "DOWN";
+                if (gamepad.axes[2] <= analog_direction) gamepad_camera_horizontal_direction = "LEFT";
+                if (gamepad.axes[2] >= analog_direction) gamepad_camera_horizontal_direction = "RIGHT";
+            }
+        }
+    }
+    
+    public function gamepadAnalogMoved(gamepad_index: Int, gamepad_analog: Int, analog_direction: String): Bool {
+        var gamepad_analog_direction: Float = 0.0;
+        if (analog_direction == "UP") gamepad_analog_direction = GAMEPAD_ANALOG_UP;
+        if (analog_direction == "DOWN") gamepad_analog_direction = GAMEPAD_ANALOG_DOWN;
+        if (analog_direction == "LEFT") gamepad_analog_direction = GAMEPAD_ANALOG_LEFT;
+        if (analog_direction == "RIGHT") gamepad_analog_direction = GAMEPAD_ANALOG_RIGHT;
+        gamepadMovement(gamepad_index, gamepad_analog, gamepad_analog_direction);
+        if (gamepad_analog == GAMEPAD_MOVE_ANALOG) {
+            return (gamepad_move_horizontal_direction == analog_direction || gamepad_move_vertical_direction == analog_direction);
+        } else if (gamepad_analog == GAMEPAD_CAMERA_ANALOG) {
+            return (gamepad_camera_horizontal_direction == analog_direction || gamepad_camera_vertical_direction == analog_direction);
+        } else {
+            return false;
+        }
+    }
+    
+    public function preventLoop(): Void {
+        latest_key_down = -1;
+        latest_key_up = -1;
+        latest_mouse_button_down = -1;
+        latest_mouse_button_up = -1;
+        click = false;
+        tap = false;
+        touchdown = false;
+        wheel_up = false;
+        wheel_down = false;
+        wheel_left = false;
+        wheel_right = false;
+        swipe_direction = "";
+        if (touches.length > 0) {
+            for (i in 0...touches.length) {
+                touches[i].swipe_direction = "";
+            }
+        }
+        gamepad_move_horizontal_direction = "";
+        gamepad_move_vertical_direction = "";
+        gamepad_camera_horizontal_direction = "";
+        gamepad_camera_vertical_direction = "";
+    }
+    
+    public var key: Dynamic = {
+        A: 65, B: 66, C: 67, D: 68, E: 69, F: 70, G: 71, H: 72, I: 73, J: 74, K: 75, L: 76, M: 77,
+        N: 78, O: 79, P: 80, Q: 81, R: 82, S: 83, T: 84, U: 85, V: 86, W: 87, X: 88, Y: 89, Z: 90,
+        ZERO: 48, ONE: 49, TWO: 50, THREE: 51, FOUR: 52, FIVE: 53, SIX: 54, SEVEN: 55, EIGHT: 56,
+        NINE: 57, UP: 38, DOWN: 40, LEFT: 37, RIGHT: 39, SPACE: 32, TAB: 9, SHIFT: 16, CONTROL: 17, 
+        ALT: 18, BACKSPACE: 8, ENTER: 13, NUMLOCK: 144, OS: 91, UNIDENTIFIED: 0, HOME: 36, PGUP: 33,
+        PGDN: 34, CLEAR: 12, DELETE: 46, ESCAPE: 27, INSERT: 45
+    }
+    
+    public var tvkey: Dynamic = {
+        UP: 38, DOWN: 40, LEFT: 37, RIGHT: 39, CHANNEL_UP: 516, CHANNEL_DOWN: 517, CONTEXT: 623, RED: 588,
+        GREEN: 589, YELLOW: 590, BLUE: 591, ENTER: 13, INFO: 615, ASPECT: 642, LASTVIEW: 651, ZERO: 48, ONE: 49, TWO: 50,
+        THREE: 51, FOUR: 52, FIVE: 53, SIX: 54, SEVEN: 55, EIGHT: 56, NINE: 57, BACK: 8, RETURN: 8, PLAY: 250, PAUSE: 19,
+        STOP: 178, RECORD: 603, FORWARD: 228, REWIND: 227, FAST_FORWARD: 176, REPLAY: 177
+    }
+    
+    public var button: Dynamic = {
+        LEFT_MOUSE_BUTTON: 0, RIGHT_MOUSE_BUTTON: 2, MIDDLE_MOUSE_BUTTON: 1, A: 0, B: 1, XBOX_X: 2,
+        Y: 3, LB: 4, RB: 5, LT: 6, RT: 7, BACK: 8, START: 9, LEFT_ANALOG_STICK: 10, RIGHT_ANALOG_STICK: 11,
+        UP: 12, DOWN: 13, LEFT: 14, RIGHT: 15, PLAYSTATION_X: 0, O: 1, SQUARE: 2, TRIANGLE: 3, L1: 4, R1: 5, L2: 6, R2: 7, 
+        SELECT: 8
+    }
+}
