@@ -4,6 +4,6 @@
 
 --class-path src
 pancake.Pancake
---dce std
+--dce full
 --main Main
 --js bin/Pancake.js
