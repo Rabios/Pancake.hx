@@ -55,41 +55,41 @@ class Random {
         return Math.random();
     }
     
-	#if PANCAKE_CANVAS2D
+    #if PANCAKE_CANVAS2D
     public function RGB(): String {
         return ("rgb(" + Std.random(255) + "," + Std.random(255) + "," + Std.random(255) + ")");
-	}
-	
-	public function RGBA(): String {
-	    return ("rgba(" + Std.random(255) + "," + Std.random(255) + "," + Std.random(255) + "," + Std.random(255) + ")");
-	}
-	
-	public function HSL(): String {
-	    return ("hsl(" + Std.random(361) + "," + Std.random(100) + "%," + Std.random(100) + "%)");
-	}
-	
-	public function HSLA(): String {
-	    return ("hsl(" + Std.random(361) + "," + Std.random(100) + "%," + Std.random(100) + "%," + Math.random() + ")");
-	}
-	
-	#elseif PANCAKE_WEBGL
-	
-	public function RGB(): Array<Float> {
+    }
+    
+    public function RGBA(): String {
+        return ("rgba(" + Std.random(255) + "," + Std.random(255) + "," + Std.random(255) + "," + Std.random(255) + ")");
+    }
+    
+    public function HSL(): String {
+        return ("hsl(" + Std.random(361) + "," + Std.random(100) + "%," + Std.random(100) + "%)");
+    }
+    
+    public function HSLA(): String {
+        return ("hsl(" + Std.random(361) + "," + Std.random(100) + "%," + Std.random(100) + "%," + Math.random() + ")");
+    }
+    
+    #elseif PANCAKE_WEBGL
+    
+    public function RGB(): Array<Float> {
         return [Math.random(), Math.random(), Math.random(), 1];
-	}
-	
-	public function RGBA(): Array<Float> {
-	    return [Math.random(), Math.random(), Math.random(), Math.random()];
-	}
-	
-	public function HSL(): Array<Float> {
-	    return [Std.random(361), Math.random(), Math.random(), 1];
-	}
-	
-	public function HSLA(): Array<Float> {
-	    return [Std.random(361), Math.random(), Math.random(), Math.random()];
-	}
-	#end
+    }
+    
+    public function RGBA(): Array<Float> {
+        return [Math.random(), Math.random(), Math.random(), Math.random()];
+    }
+    
+    public function HSL(): Array<Float> {
+        return [Std.random(361), Math.random(), Math.random(), 1];
+    }
+    
+    public function HSLA(): Array<Float> {
+        return [Std.random(361), Math.random(), Math.random(), Math.random()];
+    }
+    #end
 }
 
 class Graphics {
@@ -100,10 +100,10 @@ class Graphics {
     public static var backend: String;
     public static var context: EitherType<CanvasRenderingContext2D, js.html.webgl.RenderingContext>;
     public static var canvas: CanvasElement;
-	private static var mode: Int = Mode.FILL;
+    private static var mode: Int = Mode.FILL;
     
     // specified variables for WebGL rendering backend (They remain null when using Canvas2D rendering backend)
-	#if PANCAKE_WEBGL
+    #if PANCAKE_WEBGL
     public static var ctx2d: CanvasRenderingContext2D = null;
     public static var ctx2d_enabled: Bool = null;
     private static var program: Program = null;
@@ -121,7 +121,7 @@ class Graphics {
     private static var vidBuffer: Buffer = null;
     private static var vidRect: Buffer = null;
     private static var vidTex: VideoElement = null;
-	#end
+    #end
     
     public function new() {
         #if PANCAKE_CANVAS2D
@@ -135,11 +135,11 @@ class Graphics {
         strokeColor = [ 0, 0, 0, alpha ];
         texture = false;
         animation = false;
-		#end
+        #end
         
         js.Browser.window.console.log("Made with Pancake " + Pancake.version + "\nhttps://github.com/Rabios/Pancake\nRenderer: " + Graphics.backend);
         
-		#if PANCAKE_CANVAS2D
+        #if PANCAKE_CANVAS2D
         document.onfullscreenchange = Document.mozfullscreenchange = Document.onmsfullscreenchange = Document.onwebkitfullscreenchange = function () {
             if (fullscreen() && canvas != null) {
                 canvas.width = js.Browser.window.innerWidth;
@@ -156,19 +156,19 @@ class Graphics {
                 }
             }
         };
-		
-		#elseif PANCAKE_WEBGL
-		document.onfullscreenchange = Document.mozfullscreenchange = Document.onmsfullscreenchange = Document.onwebkitfullscreenchange = function () {
+        
+        #elseif PANCAKE_WEBGL
+        document.onfullscreenchange = Document.mozfullscreenchange = Document.onmsfullscreenchange = Document.onwebkitfullscreenchange = function () {
             if (fullscreen() && canvas != null) {
                 canvas.width = js.Browser.window.innerWidth;
                 canvas.height = js.Browser.window.innerHeight;
-				
+                
                 if (ctx2d_enabled && ctx2d.canvas != null) {
                     ctx2d.canvas.width = js.Browser.window.innerWidth;
                     ctx2d.canvas.height = js.Browser.window.innerHeight;
                 }
             }
-			
+            
             if (!fullscreen() && canvas != null) {
                 if (fits) {
                     canvas.width = js.Browser.window.innerWidth;
@@ -178,7 +178,7 @@ class Graphics {
                     canvas.height = Canvas.compatible_height;
                 }
                 
-				if (ctx2d_enabled && canvas != null) {
+                if (ctx2d_enabled && canvas != null) {
                     if (fits) {
                         ctx2d.canvas.width = js.Browser.window.innerWidth;
                         ctx2d.canvas.height = js.Browser.window.innerHeight;
@@ -189,9 +189,9 @@ class Graphics {
                 }
             }
         };
-	    #end
+        #end
     }
-	
+    
     #if PANCAKE_WEBGL
     private function loadWebGLProgram(vsCode: String, fsCode: String): Program {
         var ctx: RenderingContext = cast(context, RenderingContext);
@@ -449,13 +449,13 @@ class Graphics {
         if (ctx2d_enabled) return "rgba(" + (rgba_arr[0] * 255) + "," + (rgba_arr[1] * 255) + "," + (rgba_arr[2] * 255) + "," + (rgba_arr[3] * 255) + ")";
         return null;
     }
-	
-	private function useColor(color: Array<Float>): Void {
+    
+    private function useColor(color: Array<Float>): Void {
         var ctx: RenderingContext = cast(context, RenderingContext);
         ctx.uniform4f(ctx.getUniformLocation(program, "u_color"), color[0], color[1], color[2], color[3]);
     }
-	#end
-	
+    #end
+    
     private static function render(?buffer: Buffer = null): Void {
         #if PANCAKE_CANVAS2D
         var ctx: CanvasRenderingContext2D = cast(context, CanvasRenderingContext2D);
@@ -465,7 +465,7 @@ class Graphics {
             ctx.fill();
             ctx.stroke();
         }
-		#elseif PANCAKE_WEBGL
+        #elseif PANCAKE_WEBGL
         if (buffer != null) {
             var ctx: RenderingContext = cast(context, RenderingContext);
             ctx.uniform1i(ctx.getUniformLocation(program, "u_mode"), 1);
@@ -483,7 +483,7 @@ class Graphics {
         }
         #end
     }
-	
+    
     
     public function setMode(rendering_mode: Mode) {
         mode = rendering_mode;
@@ -530,7 +530,7 @@ class Graphics {
         #if PANCAKE_CANVAS2D
         context = cast(Pancake.contexts[context_index], CanvasRenderingContext2D);
         canvas = Pancake.contexts[context_index].canvas;
-		#elseif PANCAKE_WEBGL
+        #elseif PANCAKE_WEBGL
         context = cast(Pancake.contexts[context_index], RenderingContext);
         canvas = Pancake.contexts[context_index].canvas;
         canvas.style.position = "absolute";
@@ -547,9 +547,9 @@ class Graphics {
     public function setContext(_context: Dynamic, context_index: Int): Void {
         context = _context;
         canvas = _context.canvas;
-		#if PANCAKE_WEBGL
+        #if PANCAKE_WEBGL
         canvas.style.zIndex = "0";
-		#end
+        #end
         Pancake.contexts[context_index] = _context;
     }
     
@@ -557,15 +557,15 @@ class Graphics {
         #if PANCAKE_CANVAS2D
         var ctx: CanvasRenderingContext2D = cast(context, CanvasRenderingContext2D);
         ctx.globalAlpha = a;
-		#elseif PANCAKE_WEBGL
+        #elseif PANCAKE_WEBGL
         alpha = a;
-		#end
+        #end
     }
     
     public function RGB(r: Int, g: Int, b: Int): EitherType<String, Array<Float>> {
         #if PANCAKE_CANVAS2D
         return "rgb(" + r + "," + g + "," + b + ")";
-		#elseif PANCAKE_WEBGL
+        #elseif PANCAKE_WEBGL
         return [r / 255, g / 255, b / 255, 1];
         #end
         return null;
@@ -574,7 +574,7 @@ class Graphics {
     public function RGBA(r: Int, g: Int, b: Int, a: Int): EitherType<String, Array<Float>> {
         #if PANCAKE_CANVAS2D
         return "rgb(" + r + "," + g + "," + b + "," + a + ")";
-		#elseif PANCAKE_WEBGL
+        #elseif PANCAKE_WEBGL
         return [r / 255, g / 255, b / 255, a / 255];
         #end
         return null;
@@ -583,8 +583,8 @@ class Graphics {
     public function HSL(h: Float, s: Float, l: Float): EitherType<String, Array<Float>> {
         #if PANCAKE_CANVAS2D
         return "hsl(" + h + "," + s + "%," + l + "%)";
-		#elseif PANCAKE_WEBGL
-		return RGB(HSL2RGB(h / 360, s, l)[0], HSL2RGB(h / 360, s, l)[1], HSL2RGB(h / 360, s, l)[2]);
+        #elseif PANCAKE_WEBGL
+        return RGB(HSL2RGB(h / 360, s, l)[0], HSL2RGB(h / 360, s, l)[1], HSL2RGB(h / 360, s, l)[2]);
         #end
         return null;
     }
@@ -592,16 +592,16 @@ class Graphics {
     public function HSLA(h: Int, s: Float, l: Float, a: Float): EitherType<String, Array<Float>> {
         #if PANCAKE_CANVAS2D
         return "hsla(" + h + "," + s + "%," + l + "%," + a + ")";
-		#elseif PANCAKE_WEBGL
-		return RGBA(HSLA2RGBA(h / 360, s, l, a)[0], HSLA2RGBA(h / 360, s, l, a)[1], HSLA2RGBA(h / 360, s, l, a)[2], HSLA2RGBA(h / 360, s, l, a)[3]);
+        #elseif PANCAKE_WEBGL
+        return RGBA(HSLA2RGBA(h / 360, s, l, a)[0], HSLA2RGBA(h / 360, s, l, a)[1], HSLA2RGBA(h / 360, s, l, a)[2], HSLA2RGBA(h / 360, s, l, a)[3]);
         #end
         return null;
     }
     
     public function HEX(hex: String): EitherType<String, Array<Float>> {
         #if PANCAKE_CANVAS2D
-		return "#" + hex;
-		#elseif PANCAKE_WEBGL
+        return "#" + hex;
+        #elseif PANCAKE_WEBGL
         return RGB(cast(HEX2RGB(hex)[0] * 255, Int), cast(HEX2RGB(hex)[1] * 255, Int), cast(HEX2RGB(hex)[2] * 255, Int));
         #end
         return null;
@@ -674,10 +674,10 @@ class Graphics {
     }
     
     public function clear(): Void {
-	    #if PANCAKE_CANVAS2D
+        #if PANCAKE_CANVAS2D
         clearRect(0, 0, canvas.width, canvas.height);
         #elseif PANCAKE_WEBGL
-		var ctx: RenderingContext = cast(context, RenderingContext);
+        var ctx: RenderingContext = cast(context, RenderingContext);
         ctx.viewport(0, 0, canvas.width, canvas.height);
         var width  : Int = canvas.clientWidth  * 1 | 0;
         var height : Int = canvas.clientHeight * 1 | 0;
@@ -699,7 +699,7 @@ class Graphics {
             ctx.fillText(txt, x, y);
             ctx.strokeText(txt, x, y);
         }
-		#elseif PANCAKE_WEBGL
+        #elseif PANCAKE_WEBGL
         var ctx: RenderingContext = cast(context, RenderingContext);
         if (ctx2d_enabled) {
             if (mode == Mode.FILL) ctx2d.fillText(txt, x, y);
@@ -720,7 +720,7 @@ class Graphics {
         ctx.closePath();
         render();
         #elseif PANCAKE_WEBGL
-		if (mode == Mode.BOTH) {
+        if (mode == Mode.BOTH) {
             mode = Mode.FILL;
             useColor(fillColor);
             render(loadBuffer(loadRectBuffer(x, y, w, h)));
@@ -751,7 +751,7 @@ class Graphics {
         ctx.quadraticCurveTo(x, y, x + r, y);
         ctx.closePath();
         render();
-		#elseif PANCAKE_WEBGL
+        #elseif PANCAKE_WEBGL
         if (ctx2d_enabled) {
             ctx2d.beginPath();
             ctx2d.moveTo(x + r, y);
@@ -795,7 +795,7 @@ class Graphics {
         ctx.closePath();
         ctx.stroke();
         #elseif PANCAKE_WEBGL
-		render(loadBuffer(loadLineBuffer(x1, y1, x2, y2)));
+        render(loadBuffer(loadLineBuffer(x1, y1, x2, y2)));
         #end
     }
     
@@ -810,7 +810,7 @@ class Graphics {
         ctx.closePath();
         render();
         #elseif PANCAKE_WEBGL
-		if (mode == Mode.BOTH) {
+        if (mode == Mode.BOTH) {
             mode = Mode.FILL;
             useColor(fillColor);
             render(loadBuffer(loadTriangleBuffer(x1, y1, x2, y2, x3, y3)));
@@ -988,7 +988,7 @@ class Graphics {
             x = 0;
             y += size;
         }
-		#elseif PANCAKE_WEBGL
+        #elseif PANCAKE_WEBGL
         var previous_mode: Int = mode;
         mode = Mode.STROKE;
         for (i in 0...diff_h) {
