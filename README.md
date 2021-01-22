@@ -134,7 +134,7 @@ pancake.graphic.useContext(0);
 
 ### API
 
-Can be found [here](https://github.com/Rabios/Pancake/blob/master/api.md), But make sure to follow differences happen in Haxe port!
+Can be found [here](https://github.com/Rabios/Pancake/blob/master/docs/api.md), But make sure to follow differences happen in Haxe port!
 
 ### License
 
