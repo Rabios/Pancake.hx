@@ -26,6 +26,7 @@ Create new project anywhere, In your `build.hxml` you can include Pancake with m
 
 -L Pancake
 --class-path src
+--std full
 --js bin/game.js
 --main Main
 ```
@@ -57,13 +58,29 @@ class Main
 
         function game() {
             Pancake.graphics.clear();
-			Pancake.graphics.color(Pancake.graphics.random.RGBA());
-			Pancake.graphics.rect(0, 0, Pancake.canvases[0].width, Pancake.canvases[0].height);
+            Pancake.graphics.color(Pancake.graphics.random.RGBA());
+            Pancake.graphics.rect(0, 0, Pancake.canvases[0].width, Pancake.canvases[0].height);
         }
 
         var gameloop: Int = Pancake.timers.timer(game, 60);
     }
 }
+```
+
+Then you can write HTML file, For example:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Title will be changed by Pancake.game.title function -->
+    <meta charset="utf-8">
+</head>
+<body>
+    <!-- NOTE: You should put JavaScript of Pancake inside body, That's to not throw errors... -->
+    <script src="test.js"></script>
+</body>
+</html>
 ```
 
 ### Modules
@@ -74,17 +91,28 @@ You can include or remove parts of Pancake you don't need, You can also specify 
 
 ```
 # Modules, Comment one of them to disable them...
---define PANCAKE_CANVAS2D      # Backend, Can be also WebGL via --define PANCAKE_WEBGL
+
+# [1] For including one of following modules below, You'll need to define PANCAKE_GRAPHICS with backend to include graphics
+# PANCAKE_VIDEO
+# PANCAKE_SPRITE
+# PANCAKE_GIF
+# PANCAKE_SPRITEFONT
+
+# [2] For including replay module via defining PANCAKE_REPLAY, You'll need to define PANCAKE_INPUT to include input as replay module records input
+# [3] Pancake's default graphics backend is CanvasRenderingContext2D, But you can change it to use WebGL via changing PANCAKE_CANVAS2D to PANCAKE_WEBGL
+# [4] If you disabled graphics module, Some other modules that depends on graphics will be removed...
+
+--define PANCAKE_CANVAS2D
 --define PANCAKE_GRAPHICS
---define PANCAKE_VIDEO         # NOTE: Requires definition of PANCAKE_GRAPHICS
---define PANCAKE_SPRITE        # NOTE: Requires definition of PANCAKE_GRAPHICS
---define PANCAKE_GIF           # NOTE: Requires definition of PANCAKE_GRAPHICS
---define PANCAKE_SPRITEFONTS   # NOTE: Requires definition of PANCAKE_GRAPHICS
+--define PANCAKE_VIDEO
+--define PANCAKE_SPRITE
+--define PANCAKE_GIF
+--define PANCAKE_SPRITEFONT
 --define PANCAKE_AUDIO
 --define PANCAKE_INPUT
 --define PANCAKE_DEVICE
 --define PANCAKE_OS
---define PANCAKE_REPLAY        # NOTE: Requires definition of PANCAKE_INPUT
+--define PANCAKE_REPLAY
 --define PANCAKE_UTIL
 --define PANCAKE_PHYSICS
 --define PANCAKE_STORAGE
@@ -94,6 +122,12 @@ You can include or remove parts of Pancake you don't need, You can also specify 
 --define PANCAKE_XHR
 --define PANCAKE_GAME
 --define PANCAKE_CONTENT
+
+--class-path src
+--dce std
+pancake.Pancake
+--js bin/Pancake.js
+
 ```
 
 ### Differences of Pancake JavaScript
@@ -119,7 +153,7 @@ import pancake.*;
 class Main
 {
     public static function main(): Void {
-	    Pancake.script.load("game.js");
+        Pancake.script.load("game.js");
     }
 }
 ```

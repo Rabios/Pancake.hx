@@ -6,4 +6,4 @@
 pancake.Pancake
 --dce full
 --main Main
---js bin/Pancake.js
+--js bin/test.js
