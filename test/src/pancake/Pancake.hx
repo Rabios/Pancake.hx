@@ -139,7 +139,6 @@ class Pancake {
     public static var canvases: Array<CanvasElement> = [];
     public static var contexts: Array<Dynamic> = [];
 	public static var images: Array<Image> = [];
-    public static var WEBGL: Bool = false;
     
     public static var canvas: Canvas = new Canvas();
     public static var context: Context = new Context();
