@@ -24,8 +24,8 @@ import pancake.Mode;
 @:native("document")
 extern class Document {
     public static var fullscreen: Bool;
-    public static var webkitIsFullscreen: Bool;
-    public static var mozFullscreen: Bool;
+    public static var webkitIsFullScreen: Bool;
+    public static var mozFullScreen: Bool;
     public static function exitFullscreen(): Void;
     public static function mozCancelFullscreen(): Void;
     public static function webkitExitFullscreen(): Void;
