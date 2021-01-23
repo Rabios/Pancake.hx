@@ -27,7 +27,7 @@ extern class Document {
     public static var webkitIsFullScreen: Bool;
     public static var mozFullScreen: Bool;
     public static function exitFullscreen(): Void;
-    public static function mozCancelFullscreen(): Void;
+    public static function mozCancelFullScreen(): Void;
     public static function webkitExitFullscreen(): Void;
     public static function webkitCancelFullScreen(): Void;
     public static function msExitFullscreen(): Void;
@@ -44,7 +44,7 @@ class CanvasElementExtended extends CanvasElement {
     extern public function mozRequestFullScreen(): Any;
     extern public function webkitRequestFullscreen(): Any;
     extern public function webkitRequestFullScreen(): Any;
-    extern public function msRequestFullScreen(): Any;
+    extern public function msRequestFullscreen(): Any;
 }
 
 @:expose("pancake.graphics.random")
@@ -513,12 +513,12 @@ class Graphics {
         if (can.mozRequestFullScreen != null) can.mozRequestFullScreen();
         if (can.webkitRequestFullscreen != null) can.webkitRequestFullscreen();
         if (can.webkitRequestFullScreen != null) can.webkitRequestFullScreen();
-        if (can.msRequestFullScreen != null) can.msRequestFullScreen();
+        if (can.msRequestFullscreen != null) can.msRequestFullscreen();
     }
     
     public function exitFullscreen(): Void {
         if (Document.exitFullscreen != null) Document.exitFullscreen();
-        if (Document.mozCancelFullscreen != null) Document.mozCancelFullscreen();
+        if (Document.mozCancelFullScreen != null) Document.mozCancelFullScreen();
         if (Document.webkitCancelFullScreen != null) Document.webkitCancelFullScreen();
         if (Document.webkitExitFullscreen != null) Document.webkitExitFullscreen();
         if (Document.msExitFullscreen != null) Document.msExitFullscreen();
