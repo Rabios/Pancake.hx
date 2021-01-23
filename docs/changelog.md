@@ -2,10 +2,11 @@
 
 ### v1.0.1 (Pancake v0.0.13)
 
-> Haxelib version: 1.0.6
+> Haxelib version: 1.0.7
 
 1. Now if your are using Pancake with Cordova or Phonegap it's possible to close game natively instead of close window...
 2. Fixed fullscreen functionality!
+3. Improved gamepad functionality!
 
 ### v1.0.0 (Pancake v0.0.13)
 

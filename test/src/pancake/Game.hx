@@ -8,6 +8,17 @@ import js.Browser.navigator;
  * ...
  * @author Rabia Haffar
  */
+
+@:native("navigator.app")
+extern class NavigatorApp {
+    public static function exitApp(): Void;
+}
+
+@:native("navigator.device")
+extern class NavigatorDevice {
+    public static function exitApp(): Void;
+}
+
 class Game {
     public function new() {}
     
@@ -20,12 +31,12 @@ class Game {
     }
     
     public function close(): Void {
-	    #if (navigator.app != null)
-		navigator.app.exitApp();
-		#elseif (navigator.device != null)
-		navigator.device.exitApp();
-		#else
-        window.close();
-		#end
+	    if (NavigatorApp != null) {
+		    NavigatorApp.exitApp();
+		} else if (NavigatorDevice != null) {
+		    NavigatorDevice.exitApp();
+		} else {
+            window.close();
+		}
     }
 }

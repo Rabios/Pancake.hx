@@ -8,19 +8,18 @@ import js.html.WheelEvent;
 import js.Browser.window;
 import js.Browser.navigator;
 import js.Browser.document;
+import pancake.Navigator;
 
 /**
  * ...
  * @author Rabia Haffar
  */
-#if js.Lib.eval("Accelerometer") != null
 @:native("Accelerometer")
 extern class Accelerometer {
     public function new(properties: Dynamic): Void {};
     public function addEventListener(event: String, handler: Any): Void;
     public function start(): Any;
 }
-#end
 
 class Input {
     public var GAMEPAD_ANALOG_UP: Float = -0.1;
@@ -61,9 +60,7 @@ class Input {
     public var gamepad_move_vertical_direction: String = "";
     public var gamepad_camera_horizontal_direction: String = "";
     public var gamepad_camera_vertical_direction: String = "";
-    #if js.Lib.eval("Accelerometer") != null
-    public var accelerometer: Accelerometer = null;
-    #end
+	public var accelerometer: Accelerometer = null;
     public var touches: Array<Dynamic>;
     
     private function addEvent(s: String, f: haxe.Constraints.Function, ?options:haxe.extern.EitherType<js.html.AddEventListenerOptions, Bool>, ?wantsUntrusted:Bool): Void {
@@ -71,8 +68,7 @@ class Input {
     }
     
     public function new(): Void {
-        #if js.Lib.eval("Accelerometer") != null
-        if (Lib.eval("Accelerometer") != null) {
+	    if (Accelerometer != null) {
             accelerometer = new Accelerometer({ frequency: 60 });
             accelerometer.addEventListener("reading", function(e) {
                 accel_x = e.x;
@@ -80,8 +76,7 @@ class Input {
                 accel_z = e.z;
             });
             accelerometer.start();
-        }
-        #end
+		}
         
         addEvent("mousedown", function (e: MouseEvent) {
             swipe_start_x = (e.clientX != null) ? e.clientX : e.pageX;
@@ -287,26 +282,38 @@ class Input {
     public function unlockPointer(): Void {
         document.exitPointerLock();
     }
-        
+	
+	private function getGamepads(): Array<Gamepad> {
+	    if (Navigator.getGamepads != null) {
+		    return Navigator.getGamepads();
+		} else if (Navigator.webkitGetGamepads != null) {
+		    return Navigator.webkitGetGamepads();
+		} else if (Navigator.webkitGamepads != null) {
+		    return Navigator.webkitGamepads();
+		} else {
+		    return null;
+		}
+	}
+	
     public function gamepadConnected(gamepad_index: Int): Bool {
-        return (window.navigator.getGamepads()[gamepad_index] != null);
+        return (getGamepads()[gamepad_index] != null);
     }
     
     public function gamepadID(gamepad_index: Int): String {
-        return (navigator.getGamepads()[gamepad_index].id);
+        return (getGamepads()[gamepad_index].id);
     }
     
     public function gamepadButtonPressed(gamepad_index: Int, gamepad_button: Int): Bool {
-        return (navigator.getGamepads()[gamepad_index].buttons[gamepad_button].pressed);
+        return (getGamepads()[gamepad_index].buttons[gamepad_button].pressed);
     }
     
     public function gamepadButtonTouched(gamepad_index: Int, gamepad_button: Int): Bool {
-        return (navigator.getGamepads()[gamepad_index].buttons[gamepad_button].touched);
+        return (getGamepads()[gamepad_index].buttons[gamepad_button].touched);
     }
     
     // DEV NOTES: This works like pointer function for storing gamepad info in it's variables...
     private function gamepadMovement(gamepad_index: Int, gamepad_analog: Int, analog_direction: Float): Void {
-        var gamepad: Gamepad = navigator.getGamepads()[gamepad_index];
+        var gamepad: Gamepad = getGamepads()[gamepad_index];
         if (gamepad != null) {
             if (gamepad_analog == GAMEPAD_MOVE_ANALOG) {
                 if (gamepad.axes[1] <= analog_direction) gamepad_move_vertical_direction = "UP";

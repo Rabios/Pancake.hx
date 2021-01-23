@@ -3,15 +3,23 @@ package pancake;
 import Reflect;
 import js.html.AudioElement;
 import js.html.VideoElement;
+import js.html.Gamepad;
 import js.Browser.document;
 import js.Browser.window;
 import js.Browser.navigator;
+import pancake.Navigator;
 
 /**
  * ...
  * @author Rabia Haffar
  */
-@:expose("pancake.browser.support")
+@:native("navigator")
+extern class NavigatorGamepadsSupport {
+    public static function getGamepads(): Array<Gamepad>;
+    public static function webkitGetGamepads(): Array<Gamepad>;
+    public static function webkitGamepads(): Array<Gamepad>;
+}
+
 class Support {
     public function new() {}
     
@@ -71,7 +79,7 @@ class Support {
     }
     
     public function GAMEPAD(): Bool {
-        return (navigator.getGamepads() != null);
+        return (Navigator.getGamepads != null || Navigator.webkitGetGamepads != null || Navigator.webkitGamepads != null);
     }
 }
 

@@ -47,7 +47,6 @@ class CanvasElementExtended extends CanvasElement {
     extern public function msRequestFullscreen(): Any;
 }
 
-@:expose("pancake.graphics.random")
 class Random {
     public function new() {}
     
