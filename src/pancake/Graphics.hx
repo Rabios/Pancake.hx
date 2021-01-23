@@ -31,7 +31,7 @@ extern class Document {
     public static function webkitExitFullscreen(): Void;
     public static function webkitCancelFullScreen(): Void;
     public static function msExitFullscreen(): Void;
-    public static var mozfullscreenchange: haxe.Constraints.Function;
+    public static var onmozfullscreenchange: haxe.Constraints.Function;
     public static var onmsfullscreenchange: haxe.Constraints.Function;
     public static var onwebkitfullscreenchange: haxe.Constraints.Function;
 }
@@ -71,9 +71,7 @@ class Random {
     public function HSLA(): String {
         return ("hsl(" + Std.random(361) + "," + Std.random(100) + "%," + Std.random(100) + "%," + Math.random() + ")");
     }
-    
     #elseif PANCAKE_WEBGL
-    
     public function RGB(): Array<Float> {
         return [Math.random(), Math.random(), Math.random(), 1];
     }
@@ -140,7 +138,7 @@ class Graphics {
         js.Browser.window.console.log("Made with Pancake " + Pancake.version + "\nhttps://github.com/Rabios/Pancake\nRenderer: " + Graphics.backend);
         
         #if PANCAKE_CANVAS2D
-        document.onfullscreenchange = Document.mozfullscreenchange = Document.onmsfullscreenchange = Document.onwebkitfullscreenchange = function () {
+        document.onfullscreenchange = Document.onmozfullscreenchange = Document.onmsfullscreenchange = Document.onwebkitfullscreenchange = function () {
             if (fullscreen() && canvas != null) {
                 canvas.width = js.Browser.window.innerWidth;
                 canvas.height = js.Browser.window.innerHeight;
@@ -158,7 +156,7 @@ class Graphics {
         };
         
         #elseif PANCAKE_WEBGL
-        document.onfullscreenchange = Document.mozfullscreenchange = Document.onmsfullscreenchange = Document.onwebkitfullscreenchange = function () {
+        document.onfullscreenchange = Document.onmozfullscreenchange = Document.onmsfullscreenchange = Document.onwebkitfullscreenchange = function () {
             if (fullscreen() && canvas != null) {
                 canvas.width = js.Browser.window.innerWidth;
                 canvas.height = js.Browser.window.innerHeight;
@@ -506,7 +504,7 @@ class Graphics {
     }
     
     public function fullscreen(): Bool {
-        return (Document.fullscreen || Document.webkitIsFullscreen || Document.mozFullscreen);
+        return (Document.fullscreen || Document.webkitIsFullScreen || Document.mozFullScreen);
     }
     
     public function toggleFullscreen(): Void {

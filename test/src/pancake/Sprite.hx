@@ -1,6 +1,6 @@
 package pancake;
 
-import Reflect;
+import Reflect.field;
 import js.html.Image;
 import pancake.Pancake;
 import pancake.Graphics;

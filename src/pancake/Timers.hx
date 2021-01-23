@@ -18,7 +18,7 @@ class Timers {
     }
     
     public function timer(f: haxe.Constraints.Function, fps: Float): Int {
-        return interval(f, 1000 / fps);
+        return window.setInterval(f, 1000 / fps);
     }
     
     public function animate(f: Float -> Void): Int {

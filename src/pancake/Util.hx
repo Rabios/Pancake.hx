@@ -14,7 +14,7 @@ class Util {
     }
     
     public function randomBetween(a: Int, b: Int): Int {
-        return random(b - a) + a;
+        return Math.floor(Math.random() * (b - a)) + a;
     }
     
     public function quote(str: String): String {

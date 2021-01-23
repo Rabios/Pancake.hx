@@ -1,5 +1,7 @@
 package pancake;
 
+import Reflect.fields;
+import Reflect.field;
 import js.html.ScriptElement;
 import js.Browser.document;
 

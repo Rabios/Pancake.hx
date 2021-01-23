@@ -86,10 +86,6 @@ class Browser {
         window.open(url);
     }
     
-    public function supports(feature: String): Bool {
-        return Reflect.field(Support, feature)();
-    }
-    
     public var CHROME: Bool = is("Chrome");
     public var FIREFOX: Bool = is("Firefox");
     public var OPERA: Bool = is("OPR");
@@ -101,4 +97,7 @@ class Browser {
     public var SAMSUNG_INTERNET: Bool = is("SamsungBrowser");
     public var SEAMONKEY: Bool = is("SeaMonkey");
     public var support: Support = new Support();
+	public function supports(feature: String): Bool {
+        return Reflect.field(support, feature)();
+    }
 }

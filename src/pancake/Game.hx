@@ -2,6 +2,7 @@ package pancake;
 
 import js.Browser.document;
 import js.Browser.window;
+import js.Browser.navigator;
 
 /**
  * ...
@@ -19,6 +20,12 @@ class Game {
     }
     
     public function close(): Void {
+	    #if (navigator.app != null)
+		navigator.app.exitApp();
+		#elseif (navigator.device != null)
+		navigator.device.exitApp();
+		#else
         window.close();
+		#end
     }
 }

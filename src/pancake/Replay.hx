@@ -1,6 +1,7 @@
 package pancake;
 
-import Reflect;
+import Reflect.fields;
+import Reflect.field;
 import pancake.Pancake;
 
 /**

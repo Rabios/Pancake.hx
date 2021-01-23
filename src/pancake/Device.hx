@@ -27,10 +27,10 @@ class Device {
     
     public function online(): Bool {
         try {
-            var x: XMLHttpRequest = new XMLHttpRequest();
-            x.open("GET", "https://ipinfo.io/json", false);
-            x.send(null);
-            var f: Int = x.status;
+            var request: XMLHttpRequest = new XMLHttpRequest();
+            request.open("GET", "https://ipinfo.io/json", false);
+            request.send(null);
+            var f: Int = request.status;
             return (f >= 200 && (f < 300 || f == 304));
         } catch (e) {
             return false;
@@ -38,12 +38,12 @@ class Device {
     }
     
     public function geoInfo(): Dynamic {
-        var x: XMLHttpRequest = new XMLHttpRequest();
-        x.open("GET", "https://ipinfo.io/json", false);
-        x.send(null);
-        var f: Int = x.status;
+        var request: XMLHttpRequest = new XMLHttpRequest();
+        request.open("GET", "https://ipinfo.io/json", false);
+        request.send(null);
+        var f: Int = request.status;
         if (f >= 200 && (f < 300 || f == 304)) {
-            return Json.parse(x.responseText);
+            return Json.parse(request.responseText);
         }
         return null;
     }
