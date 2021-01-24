@@ -37,8 +37,12 @@ class Timers {
     
     public function dt(): Float {
         t2 = window.performance.now();
-        rdt = 1000 / (t2 - t1);
+        rdt = t2 - t1;
         t1 = t2;
         return rdt;
+    }
+	
+    public function fps(): Float {
+	    return 1000 / dt();
     }
 }
