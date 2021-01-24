@@ -91,8 +91,8 @@ class Random {
 
 class Graphics {
     public var FILL: Int = Mode.FILL;
-	public var STROKE: Int = Mode.STROKE;
-	public var BOTH: Int = Mode.BOTH;
+    public var STROKE: Int = Mode.STROKE;
+    public var BOTH: Int = Mode.BOTH;
     public var fits: Bool = false;
     public var scissor: Bool = true;
     public var random: Random = new Random();
@@ -138,7 +138,7 @@ class Graphics {
         animation = false;
         #end
 		
-		#if (PANCAKE_CANVAS2D || PANCAKE_WEBGL)
+        #if (PANCAKE_CANVAS2D || PANCAKE_WEBGL)
         js.Browser.window.console.log("Made with Pancake " + Pancake.version + "\nhttps://github.com/Rabios/Pancake\nRenderer: " + backend);
         #end
 		
