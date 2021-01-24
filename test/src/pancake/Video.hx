@@ -29,7 +29,7 @@ class Video {
     public function play(video_index: Int, x: Float, y: Float, w: Float, h: Float): Void {
         if (!cast(Pancake.videos[video_index], VideoElementExtended).is_paused) {
             if (!cast(Pancake.videos[video_index], VideoElementExtended).ended) {
-                Graphics.renderImage(cast(Pancake.videos[video_index], Image), 0, 0, cast(Pancake.videos[video_index], Image).width, cast(Pancake.videos[video_index], Image).height, x, y, w, h);
+                Pancake.graphics.drawImage(cast(Pancake.videos[video_index], Image), 0, 0, cast(Pancake.videos[video_index], Image).width, cast(Pancake.videos[video_index], Image).height, x, y, w, h);
                 Pancake.videos[video_index].play();
             }
         } else {

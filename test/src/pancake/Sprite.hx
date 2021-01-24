@@ -3,7 +3,6 @@ package pancake;
 import Reflect.field;
 import js.html.Image;
 import pancake.Pancake;
-import pancake.Graphics;
 
 /**
  * ...
@@ -29,7 +28,7 @@ class Sprite {
         sp_state.time = sp_state.time != null ? sp_state.time : 0;
         sp_state.paused = sp_state.paused != null ? sp_state.paused : false;
         if (sp_state.info[sp_state.frame] != null && (sp_state.frame <= sp_state.end - 1)) {
-            Graphics.renderImage(Pancake.sprites[sprite_index].src, sp_state.info[sp_state.frame].x, sp_state.info[sp_state.frame].y, sp_state.info[sp_state.frame].w, sp_state.info[sp_state.frame].h, x, y, w, h);
+            Pancake.graphics.drawImage(Pancake.sprites[sprite_index].src, sp_state.info[sp_state.frame].x, sp_state.info[sp_state.frame].y, sp_state.info[sp_state.frame].w, sp_state.info[sp_state.frame].h, x, y, w, h);
             if (!sp_state.paused) {
                 if (sp_state.time == sp_state.duration) {
                     sp_state.time = 0;

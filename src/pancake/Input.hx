@@ -256,7 +256,7 @@ class Input {
         document.getElementsByTagName("html")[0].style.height = "100%";
         Pancake.canvases[canvas_index != null ? canvas_index : 0].style.cursor = state;
         #if PANCAKE_WEBGL
-        if (Graphics.ctx2d_enabled) Graphics.ctx2d.canvas.style.cursor = state;
+        if (Pancake.graphics.ctx2d_enabled) Pancake.graphics.ctx2d.canvas.style.cursor = state;
         #end
         document.body.style.height = "auto";
         document.getElementsByTagName("html")[0].style.height = "auto";
@@ -275,8 +275,8 @@ class Input {
     }
     
     public function lockPointer(): Void {
-        if (Graphics.canvas.requestPointerLock != null) Graphics.canvas.requestPointerLock();
-        if ($type(document.pointerLockElement) == $type(Graphics.canvas)) Graphics.canvas.requestPointerLock();
+        if (Pancake.graphics.canvas.requestPointerLock != null) Pancake.graphics.canvas.requestPointerLock();
+        if ($type(document.pointerLockElement) == $type(Pancake.graphics.canvas)) Pancake.graphics.canvas.requestPointerLock();
     }
     
     public function unlockPointer(): Void {
@@ -296,19 +296,39 @@ class Input {
 	}
 	
     public function gamepadConnected(gamepad_index: Int): Bool {
-        return (getGamepads()[gamepad_index] != null);
+	    var gamepads: Array<Gamepad> = getGamepads();
+        if (gamepads != null) {
+            return gamepads[gamepad_index] != null;
+        } else {
+	        return false;
+		}
     }
     
     public function gamepadID(gamepad_index: Int): String {
-        return (getGamepads()[gamepad_index].id);
+	    var gamepads: Array<Gamepad> = getGamepads();
+	    if (gamepads != null && gamepads[gamepad_index] != null) {
+            return gamepads[gamepad_index].id;
+        } else {
+            return null;
+        }
     }
     
     public function gamepadButtonPressed(gamepad_index: Int, gamepad_button: Int): Bool {
-        return (getGamepads()[gamepad_index].buttons[gamepad_button].pressed);
+	    var gamepads: Array<Gamepad> = getGamepads();
+	    if (gamepads != null && gamepads[gamepad_index] != null) {
+		    return gamepads[gamepad_index].buttons[gamepad_button].pressed;
+        } else {
+		    return false;
+        }
     }
     
     public function gamepadButtonTouched(gamepad_index: Int, gamepad_button: Int): Bool {
-        return (getGamepads()[gamepad_index].buttons[gamepad_button].touched);
+        var gamepads: Array<Gamepad> = getGamepads();
+        if (gamepads != null && gamepads[gamepad_index] != null) {
+		    return gamepads[gamepad_index].buttons[gamepad_button].touched;
+        } else {
+            return false;
+        }
     }
     
     // DEV NOTES: This works like pointer function for storing gamepad info in it's variables...

@@ -90,14 +90,17 @@ class Random {
 }
 
 class Graphics {
+    public var FILL: Int = Mode.FILL;
+	public var STROKE: Int = Mode.STROKE;
+	public var BOTH: Int = Mode.BOTH;
     public var fits: Bool = false;
     public var scissor: Bool = true;
     public var random: Random = new Random();
-    public static var tint: EitherType<String, Array<Float>>;
-    public static var backend: String;
-    public static var context: EitherType<CanvasRenderingContext2D, js.html.webgl.RenderingContext>;
-    public static var canvas: CanvasElement;
-    private static var mode: Int = Mode.FILL;
+    public var tint: EitherType<String, Array<Float>>;
+    public var backend: String;
+    public var context: EitherType<CanvasRenderingContext2D, js.html.webgl.RenderingContext>;
+    public var canvas: CanvasElement;
+    public var mode: Int;
     
     // specified variables for WebGL rendering backend (They remain null when using Canvas2D rendering backend)
     #if PANCAKE_WEBGL
@@ -121,21 +124,24 @@ class Graphics {
     #end
     
     public function new() {
+        mode = FILL;
         #if PANCAKE_CANVAS2D
         backend = "CanvasRenderingContext2D";
         tint = null;
         #elseif PANCAKE_WEBGL
         backend = "WebGLRenderingContext";
-        tint = [1, 1, 1, 1];
+        tint = [1, 1, 1, alpha];
         alpha = 1;
         fillColor = [ 0, 0, 0, alpha ];
         strokeColor = [ 0, 0, 0, alpha ];
         texture = false;
         animation = false;
         #end
-        
-        js.Browser.window.console.log("Made with Pancake " + Pancake.version + "\nhttps://github.com/Rabios/Pancake\nRenderer: " + Graphics.backend);
-        
+		
+		#if (PANCAKE_CANVAS2D || PANCAKE_WEBGL)
+        js.Browser.window.console.log("Made with Pancake " + Pancake.version + "\nhttps://github.com/Rabios/Pancake\nRenderer: " + backend);
+        #end
+		
         #if PANCAKE_CANVAS2D
         document.onfullscreenchange = Document.onmozfullscreenchange = Document.onmsfullscreenchange = Document.onwebkitfullscreenchange = function () {
             if (fullscreen() && canvas != null) {
@@ -259,7 +265,7 @@ class Graphics {
         texture = false;
         animation = false;
         primitives_vertex_count = 4;
-        primitives_mode = (mode == Mode.FILL) ? GL.TRIANGLE_FAN : GL.LINE_LOOP;
+        primitives_mode = (mode == FILL) ? GL.TRIANGLE_FAN : GL.LINE_LOOP;
         return [
             x, y,
             x + w, y,
@@ -280,7 +286,7 @@ class Graphics {
         texture = false;
         animation = false;
         primitives_vertex_count = 3;
-        primitives_mode = (mode == Mode.FILL) ? GL.TRIANGLES : GL.LINE_LOOP;
+        primitives_mode = (mode == FILL) ? GL.TRIANGLES : GL.LINE_LOOP;
         return [ x1, y1, x2, y2, x3, y3 ];
     }
     
@@ -453,12 +459,12 @@ class Graphics {
     }
     #end
     
-    private static function render(?buffer: Buffer = null): Void {
+    private function render(?buffer: Buffer = null): Void {
         #if PANCAKE_CANVAS2D
         var ctx: CanvasRenderingContext2D = cast(context, CanvasRenderingContext2D);
-        if (mode == Mode.FILL) ctx.fill();
-        if (mode == Mode.STROKE) ctx.stroke();
-        if (mode == Mode.BOTH) {
+        if (mode == FILL) ctx.fill();
+        if (mode == STROKE) ctx.stroke();
+        if (mode == BOTH) {
             ctx.fill();
             ctx.stroke();
         }
@@ -479,11 +485,6 @@ class Graphics {
             ctx.uniform1i(ctx.getUniformLocation(program, "u_mode"), 1);
         }
         #end
-    }
-    
-    
-    public function setMode(rendering_mode: Mode) {
-        mode = rendering_mode;
     }
     
     public function fit(): Void {
@@ -648,14 +649,6 @@ class Graphics {
         #end
     }
     
-    public function setTint(r: Int, g: Int, b: Int, a: Int): Void {
-        tint = RGBA(r, g, b, a);
-    }
-    
-    public function disableTint(): Void {
-        tint = null;
-    }
-    
     public function clearRect(x: Int, y: Int, w: Int, h: Int): Void {
         #if PANCAKE_CANVAS2D
         var ctx: CanvasRenderingContext2D = cast(context, CanvasRenderingContext2D);
@@ -690,18 +683,18 @@ class Graphics {
     public function text(txt: String, x: Float, y: Float): Void {
         #if PANCAKE_CANVAS2D
         var ctx: CanvasRenderingContext2D = cast(context, CanvasRenderingContext2D);
-        if (mode == Mode.FILL) ctx.fillText(txt, x, y);
-        if (mode == Mode.STROKE) ctx.strokeText(txt, x, y);
-        if (mode == Mode.BOTH) {
+        if (mode == FILL) ctx.fillText(txt, x, y);
+        if (mode == STROKE) ctx.strokeText(txt, x, y);
+        if (mode == BOTH) {
             ctx.fillText(txt, x, y);
             ctx.strokeText(txt, x, y);
         }
         #elseif PANCAKE_WEBGL
         var ctx: RenderingContext = cast(context, RenderingContext);
         if (ctx2d_enabled) {
-            if (mode == Mode.FILL) ctx2d.fillText(txt, x, y);
-            if (mode == Mode.STROKE) ctx2d.strokeText(txt, x, y);
-            if (mode == Mode.BOTH) {
+            if (mode == FILL) ctx2d.fillText(txt, x, y);
+            if (mode == STROKE) ctx2d.strokeText(txt, x, y);
+            if (mode == BOTH) {
                 ctx2d.fillText(txt, x, y);
                 ctx2d.strokeText(txt, x, y);
             }
@@ -717,18 +710,18 @@ class Graphics {
         ctx.closePath();
         render();
         #elseif PANCAKE_WEBGL
-        if (mode == Mode.BOTH) {
-            mode = Mode.FILL;
+        if (mode == BOTH) {
+            mode = FILL;
             useColor(fillColor);
             render(loadBuffer(loadRectBuffer(x, y, w, h)));
-            mode = Mode.STROKE;
+            mode = STROKE;
             useColor(strokeColor);
             render(loadBuffer(loadRectBuffer(x, y, w, h)));
-            mode = Mode.BOTH;
+            mode = BOTH;
             return;
         }
-        if (mode == Mode.FILL) useColor(fillColor);
-        if (mode == Mode.STROKE) useColor(strokeColor);
+        if (mode == FILL) useColor(fillColor);
+        if (mode == STROKE) useColor(strokeColor);
         render(loadBuffer(loadRectBuffer(x, y, w, h)));
         #end
     }
@@ -761,9 +754,9 @@ class Graphics {
             ctx2d.lineTo(x, y + r);
             ctx2d.quadraticCurveTo(x, y, x + r, y);
             ctx2d.closePath();
-            if (mode == Mode.FILL) ctx2d.fill();
-            if (mode == Mode.STROKE) ctx2d.stroke();
-            if (mode == Mode.BOTH) {
+            if (mode == FILL) ctx2d.fill();
+            if (mode == STROKE) ctx2d.stroke();
+            if (mode == BOTH) {
                 ctx2d.fill();
                 ctx2d.stroke();
             }
@@ -807,18 +800,18 @@ class Graphics {
         ctx.closePath();
         render();
         #elseif PANCAKE_WEBGL
-        if (mode == Mode.BOTH) {
-            mode = Mode.FILL;
+        if (mode == BOTH) {
+            mode = FILL;
             useColor(fillColor);
             render(loadBuffer(loadTriangleBuffer(x1, y1, x2, y2, x3, y3)));
-            mode = Mode.STROKE;
+            mode = STROKE;
             useColor(strokeColor);
             render(loadBuffer(loadTriangleBuffer(x1, y1, x2, y2, x3, y3)));
-            mode = Mode.BOTH;
+            mode = BOTH;
             return;
         }
-        if (mode == Mode.FILL) useColor(fillColor);
-        if (mode == Mode.STROKE) useColor(strokeColor);
+        if (mode == FILL) useColor(fillColor);
+        if (mode == STROKE) useColor(strokeColor);
         render(loadBuffer(loadTriangleBuffer(x1, y1, x2, y2, x3, y3)));
         #end
     }
@@ -842,7 +835,7 @@ class Graphics {
             points.push(y + size * Math.sin(2 * i * Math.PI / sides));
         }
         primitives_vertex_count = sides;
-        if (mode == Mode.BOTH) {
+        if (mode == BOTH) {
             useColor(fillColor);
             primitives_mode = GL.TRIANGLE_FAN;
             render(loadBuffer(points));
@@ -850,12 +843,12 @@ class Graphics {
             primitives_mode = GL.LINE_LOOP;
             render(loadBuffer(points));
         }
-        if (mode == Mode.FILL) {
+        if (mode == FILL) {
             useColor(fillColor);
             primitives_mode = GL.TRIANGLE_FAN;
             render(loadBuffer(points));
         }
-        if (mode == Mode.STROKE) {
+        if (mode == STROKE) {
             useColor(strokeColor);
             primitives_mode = GL.LINE_LOOP;
             render(loadBuffer(points));
@@ -872,7 +865,7 @@ class Graphics {
         Pancake.images[image_index] = element;
     }
     
-    public static function renderImage(image: Image, sx: Float, sy: Float, sw: Float, sh: Float, dx: Float, dy: Float, dw: Float, dh: Float): Void {
+    public function drawImage(image: Image, sx: Float, sy: Float, sw: Float, sh: Float, dx: Float, dy: Float, dw: Float, dh: Float): Void {
         #if PANCAKE_CANVAS2D
         var ctx: CanvasRenderingContext2D = cast(context, CanvasRenderingContext2D);
         ctx.imageSmoothingEnabled = false;
@@ -911,20 +904,16 @@ class Graphics {
         #end
     }
     
-    public function drawImage(image: Image, sx: Float, sy: Float, sw: Float, sh: Float, dx: Float, dy: Float, dw: Float, dh: Float): Void {
-        renderImage(image, sx, sy, sw, sh, dx, dy, dw, dh);
-    }
-    
     public function drawImageFromIndex(image_index: Int, sx: Float, sy: Float, sw: Float, sh: Float, dx: Float, dy: Float, dw: Float, dh: Float): Void {
-        renderImage(Pancake.images[image_index], sx, sy, sw, sh, dx, dy, dw, dh);
+        drawImage(Pancake.images[image_index], sx, sy, sw, sh, dx, dy, dw, dh);
     }
     
     public function image(im: Image, x: Float, y: Float, w: Float, h: Float): Void {
-        renderImage(im, 0, 0, im.width, im.height, x, y, w, h);
+        drawImage(im, 0, 0, im.width, im.height, x, y, w, h);
     }
     
     public function imageFromIndex(image_index: Int, x: Float, y: Float, w: Float, h: Float): Void {
-        renderImage(Pancake.images[image_index], 0, 0, Pancake.images[image_index].width, Pancake.images[image_index].height, x, y, w, h);
+        drawImage(Pancake.images[image_index], 0, 0, Pancake.images[image_index].width, Pancake.images[image_index].height, x, y, w, h);
     }
     
     public function useFilters(filters: Array<String>, filters_values: Array<String>): Void {
@@ -987,7 +976,7 @@ class Graphics {
         }
         #elseif PANCAKE_WEBGL
         var previous_mode: Int = mode;
-        mode = Mode.STROKE;
+        mode = STROKE;
         for (i in 0...diff_h) {
             for (j in 0...diff_w) {
                 rect(x, y, size, size);

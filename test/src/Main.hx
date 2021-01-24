@@ -16,7 +16,7 @@ class Main
         Pancake.context.create(0, 0);
         Pancake.graphics.useContext(0);
         Pancake.canvases[0].style.border = "1px black solid";
-        
+		
         var logo_x: Int = 280;
         var logo_y: Int = 150;
         var timer: Int = 0;
