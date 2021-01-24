@@ -5,7 +5,7 @@
 > Haxelib version: 1.0.9
 
 1. Improvements on design on port!
-2. Reverted additions of `Pancake.graphics.setMode` and `Pancake.graphics.disableTint` and `Pancake.graphics.setTint`
+2. Reverted additions of `Pancake.graphics.setMode` and `Pancake.graphics.disableTint` and `Pancake.graphics.setTint`.
 
 > By mean to use tint you change value of `Pancake.graphics.tint`, To disable tint by setting `Pancake.graphics.tint` to `null`, And to set drawing mode change value of `Pancake.graphics.mode` to one of types in `Mode` enum!
 
