@@ -60,7 +60,7 @@ class Input {
     public var gamepad_move_vertical_direction: String = "";
     public var gamepad_camera_horizontal_direction: String = "";
     public var gamepad_camera_vertical_direction: String = "";
-	public var accelerometer: Accelerometer = null;
+    public var accelerometer: Accelerometer = null;
     public var touches: Array<Dynamic>;
     
     private function addEvent(s: String, f: haxe.Constraints.Function, ?options:haxe.extern.EitherType<js.html.AddEventListenerOptions, Bool>, ?wantsUntrusted:Bool): Void {
@@ -68,7 +68,7 @@ class Input {
     }
     
     public function new(): Void {
-	    if (Accelerometer != null) {
+        if (Accelerometer != null) {
             accelerometer = new Accelerometer({ frequency: 60 });
             accelerometer.addEventListener("reading", function(e) {
                 accel_x = e.x;
@@ -76,7 +76,7 @@ class Input {
                 accel_z = e.z;
             });
             accelerometer.start();
-		}
+        }
         
         addEvent("mousedown", function (e: MouseEvent) {
             swipe_start_x = (e.clientX != null) ? e.clientX : e.pageX;
@@ -282,31 +282,31 @@ class Input {
     public function unlockPointer(): Void {
         document.exitPointerLock();
     }
-	
-	private function getGamepads(): Array<Gamepad> {
-	    if (Navigator.getGamepads != null) {
-		    return Navigator.getGamepads();
-		} else if (Navigator.webkitGetGamepads != null) {
-		    return Navigator.webkitGetGamepads();
-		} else if (Navigator.webkitGamepads != null) {
-		    return Navigator.webkitGamepads();
-		} else {
-		    return null;
-		}
-	}
-	
+    
+    private function getGamepads(): Array<Gamepad> {
+        if (Navigator.getGamepads != null) {
+            return Navigator.getGamepads();
+        } else if (Navigator.webkitGetGamepads != null) {
+            return Navigator.webkitGetGamepads();
+        } else if (Navigator.webkitGamepads != null) {
+            return Navigator.webkitGamepads();
+        } else {
+            return null;
+        }
+    }
+    
     public function gamepadConnected(gamepad_index: Int): Bool {
-	    var gamepads: Array<Gamepad> = getGamepads();
+        var gamepads: Array<Gamepad> = getGamepads();
         if (gamepads != null) {
             return gamepads[gamepad_index] != null;
         } else {
-	        return false;
-		}
+            return false;
+        }
     }
     
     public function gamepadID(gamepad_index: Int): String {
-	    var gamepads: Array<Gamepad> = getGamepads();
-	    if (gamepads != null && gamepads[gamepad_index] != null) {
+        var gamepads: Array<Gamepad> = getGamepads();
+        if (gamepads != null && gamepads[gamepad_index] != null) {
             return gamepads[gamepad_index].id;
         } else {
             return null;
@@ -314,18 +314,18 @@ class Input {
     }
     
     public function gamepadButtonPressed(gamepad_index: Int, gamepad_button: Int): Bool {
-	    var gamepads: Array<Gamepad> = getGamepads();
-	    if (gamepads != null && gamepads[gamepad_index] != null) {
-		    return gamepads[gamepad_index].buttons[gamepad_button].pressed;
+        var gamepads: Array<Gamepad> = getGamepads();
+        if (gamepads != null && gamepads[gamepad_index] != null) {
+            return gamepads[gamepad_index].buttons[gamepad_button].pressed;
         } else {
-		    return false;
+            return false;
         }
     }
     
     public function gamepadButtonTouched(gamepad_index: Int, gamepad_button: Int): Bool {
         var gamepads: Array<Gamepad> = getGamepads();
         if (gamepads != null && gamepads[gamepad_index] != null) {
-		    return gamepads[gamepad_index].buttons[gamepad_button].touched;
+            return gamepads[gamepad_index].buttons[gamepad_button].touched;
         } else {
             return false;
         }

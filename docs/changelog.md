@@ -2,7 +2,7 @@
 
 ### v1.0.2 (Pancake v0.0.13)
 
-> Haxelib version: 1.0.8
+> Haxelib version: 1.0.9
 
 1. Improvements on design on port!
 2. Reverted additions of `Pancake.graphics.setMode` and `Pancake.graphics.disableTint` and `Pancake.graphics.setTint`

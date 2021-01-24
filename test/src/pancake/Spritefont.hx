@@ -50,7 +50,7 @@ class Spritefont {
             #end
         }
         #if PANCAKE_WEBGL
-		Pancake.graphics.tint = old_tint;
-		#end
+        Pancake.graphics.tint = old_tint;
+        #end
     }
 }
