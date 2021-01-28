@@ -2,7 +2,6 @@ package pancake;
 
 import js.html.Image;
 import pancake.Pancake;
-import pancake.Graphics;
 
 /**
  * ...

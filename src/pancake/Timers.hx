@@ -41,8 +41,8 @@ class Timers {
         t1 = t2;
         return rdt;
     }
-	
+    
     public function fps(): Float {
-	    return 1000 / dt();
+        return 1000 / dt();
     }
 }

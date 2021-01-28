@@ -4,7 +4,7 @@ import haxe.Json;
 import haxe.extern.EitherType;
 import js.Browser.window;
 import js.Browser.navigator;
-import js.html.XMLHttpRequest;
+import pancake.Pancake;
 
 /**
  * ...
@@ -27,7 +27,7 @@ class Device {
     
     public function online(): Bool {
         try {
-            var request: XMLHttpRequest = new XMLHttpRequest();
+            var request: Dynamic = Pancake.xhr.CompatibleXMLHttpRequest();
             request.open("GET", "https://ipinfo.io/json", false);
             request.send(null);
             var f: Int = request.status;
@@ -38,7 +38,7 @@ class Device {
     }
     
     public function geoInfo(): Dynamic {
-        var request: XMLHttpRequest = new XMLHttpRequest();
+        var request: Dynamic = Pancake.xhr.CompatibleXMLHttpRequest();
         request.open("GET", "https://ipinfo.io/json", false);
         request.send(null);
         var f: Int = request.status;

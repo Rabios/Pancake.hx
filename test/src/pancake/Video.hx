@@ -4,7 +4,6 @@ import js.html.VideoElement;
 import js.Browser.document;
 import js.html.Image;
 import pancake.Pancake;
-import pancake.Graphics;
 
 /**
  * ...

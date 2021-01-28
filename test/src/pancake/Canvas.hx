@@ -4,15 +4,25 @@ import js.html.CanvasElement;
 import js.Browser.window;
 import js.Browser.document;
 import pancake.Pancake;
+import pancake.Native;
 
 /**
  * ...
  * @author Rabia Haffar
  */
 class Canvas {
-    public function new() {}
-    public static var compatible_width: Int = cast(window.innerWidth - 20, Int);
-    public static var compatible_height: Int = cast(window.innerHeight - 20, Int);
+    public static var compatible_width: Int;
+    public static var compatible_height: Int;
+
+    public function new() {
+        if (Windows != null) {
+            compatible_width = cast(window.innerWidth, Int);
+            compatible_height = cast(window.innerHeight, Int);
+        } else {
+            compatible_width = cast(window.innerWidth - 20, Int);
+            compatible_height = cast(window.innerHeight - 20, Int);
+        }
+    }
     
     public function create(width: Int, height: Int, canvas_index: Int): Void {
         Pancake.canvases[canvas_index] = document.createCanvasElement();

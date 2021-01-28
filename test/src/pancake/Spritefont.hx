@@ -5,7 +5,6 @@ import js.Browser.document;
 import js.html.Image;
 import js.html.CanvasElement;
 import js.html.CanvasRenderingContext2D;
-import pancake.Graphics;
 import pancake.Pancake;
 
 /**

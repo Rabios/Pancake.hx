@@ -16,6 +16,7 @@ import js.html.Float32Array;
 import js.lib.Math;
 import pancake.Pancake;
 import pancake.Mode;
+import pancake.Native;
 
 /**
  * ...
@@ -490,24 +491,59 @@ class Graphics {
     public function fit(): Void {
         canvas.style.position = "absolute";
         canvas.style.left = canvas.style.top = "0px";
-        canvas.width = cast(Canvas.compatible_width + 20, Int);
-        canvas.height = cast(Canvas.compatible_height + 20, Int);
+        if (Windows != null) {
+            canvas.width = cast(Canvas.compatible_width, Int);
+            canvas.height = cast(Canvas.compatible_height, Int);
+        } else {
+            canvas.width = cast(Canvas.compatible_width + 20, Int);
+            canvas.height = cast(Canvas.compatible_height + 20, Int);
+        }
         #if PANCAKE_WEBGL
         if (ctx2d_enabled) {
             ctx2d.canvas.style.position = "absolute";
             ctx2d.canvas.style.left = ctx2d.canvas.style.top = "0px";
-            ctx2d.canvas.width = cast(Canvas.compatible_width + 20, Int);
-            ctx2d.canvas.height = cast(Canvas.compatible_height + 20, Int);
+            if (Windows != null) {
+                ctx2d.canvas.width = cast(Canvas.compatible_width, Int);
+                ctx2d.canvas.height = cast(Canvas.compatible_height, Int);
+            } else {
+                ctx2d.canvas.width = cast(Canvas.compatible_width + 20, Int);
+                ctx2d.canvas.height = cast(Canvas.compatible_height + 20, Int);
+            }
         }
         #end
         fits = true;
     }
     
     public function fullscreen(): Bool {
-        return (Document.fullscreen || Document.webkitIsFullScreen || Document.mozFullScreen);
+        if (Windows != null) {
+            return (UWPCurrentView.isFullScreen || UWPCurrentView.isFullScreenMode);
+        }
+        else return (Document.fullscreen || Document.webkitIsFullScreen || Document.mozFullScreen || document.fullscreenElement != null);
     }
     
     public function toggleFullscreen(): Void {
+        if (Windows != null) {
+            if (!fullscreen()) {
+                if (UWPCurrentView.tryEnterFullScreenMode()) {
+                    UWPCurrentView.fullScreenSystemOverlayMode = UWPWindowingModes.fullscreen;
+                }
+            }
+        }
+        
+        if (NWJS != null) {
+            if (NWJSWindow.get() != null) {
+                NWJSWindow.get().toggleFullscreen();
+                NWJSWindow.get().enterFullscreen();
+            }
+        }
+        
+        if (Window.require != null) {
+            if (ElectronWindow != null) {
+                ElectronWindow.setFullScreen(true);
+                ElectronWindow.setMenuBarVisibility(false);
+            }
+        }
+        
         if (canvas.requestFullscreen != null) canvas.requestFullscreen();
         var can: CanvasElementExtended = cast(canvas, CanvasElementExtended);
         if (can.mozRequestFullScreen != null) can.mozRequestFullScreen();
@@ -517,6 +553,24 @@ class Graphics {
     }
     
     public function exitFullscreen(): Void {
+        if (Windows != null) {
+            if (fullscreen()) {
+                UWPCurrentView.exitFullScreenMode();
+                UWPCurrentView.fullScreenSystemOverlayMode = UWPWindowingModes.preferredLaunchViewSize;
+            }
+        }
+        
+        if (NWJS != null) {
+            if (NWJSWindow.get() != null) {
+                NWJSWindow.get().leaveFullscreen();
+            }
+        }
+        if (Window.require != null) {
+            if (ElectronWindow != null) {
+                ElectronWindow.setFullScreen(false);
+                ElectronWindow.setMenuBarVisibility(true);
+            }
+        }
         if (Document.exitFullscreen != null) Document.exitFullscreen();
         if (Document.mozCancelFullScreen != null) Document.mozCancelFullScreen();
         if (Document.webkitCancelFullScreen != null) Document.webkitCancelFullScreen();

@@ -3,27 +3,19 @@ package pancake;
 import js.Browser.document;
 import js.Browser.window;
 import js.Browser.navigator;
+import pancake.Native;
 
 /**
  * ...
  * @author Rabia Haffar
  */
 
-@:native("navigator.app")
-extern class NavigatorApp {
-    public static function exitApp(): Void;
-}
-
-@:native("navigator.device")
-extern class NavigatorDevice {
-    public static function exitApp(): Void;
-}
-
 class Game {
     public function new() {}
     
     public function title(title: String): Void {
-        document.title = title;
+        if (Windows != null) UWPCurrentView.title = title;
+        else document.title = title;
     }
     
     public function restart(): Void {
@@ -31,12 +23,12 @@ class Game {
     }
     
     public function close(): Void {
-	    if (NavigatorApp != null) {
-		    NavigatorApp.exitApp();
-		} else if (NavigatorDevice != null) {
-		    NavigatorDevice.exitApp();
-		} else {
+        if (NavigatorApp != null) {
+            NavigatorApp.exitApp();
+        } else if (NavigatorDevice != null) {
+            NavigatorDevice.exitApp();
+        } else {
             window.close();
-		}
+        }
     }
 }

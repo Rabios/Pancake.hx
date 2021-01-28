@@ -1,6 +1,6 @@
 // Written by Rabia Alhaffar in 24/December/2020
 // Pancake port for Haxe, https://github.com/Rabios/Pancake
-// Latest Version: 24/January/2021
+// Latest Version: 29/January/2021
 /*
 All thanks to everyone in Haxe discord server, Including:
     - @Gama11
@@ -133,7 +133,7 @@ import pancake.Game;
  */
 @:expose("pancake")
 class Pancake {
-    public static var version: String = "v0.0.13";
+    public static var version: String = "v0.0.14";
     
     #if PANCAKE_GRAPHICS
     public static var canvases: Array<CanvasElement> = [];

@@ -1,8 +1,17 @@
 # CHANGELOG
 
+### v1.0.3 (Pancake v0.0.14)
+
+> Haxelib version: 1.0.12
+
+1. Update to Pancake v0.0.14!
+2. Added input constants, And stuff related to what added in Pancake v0.0.14!
+3. Added gamepad input support for UWP and WinJS, In addition to more stuff!
+4. Now Pancake is able to work with Phonegap, Cordova, NWJS, Electron, UWP, WinJS at same time!
+
 ### v1.0.2 (Pancake v0.0.13)
 
-> Haxelib version: 1.0.10
+> Haxelib version: 1.0.11
 
 1. Improvements on design on port!
 2. Reverted additions of `Pancake.graphics.setMode` and `Pancake.graphics.disableTint` and `Pancake.graphics.setTint`

@@ -8,6 +8,7 @@ import js.Browser.document;
 import js.Browser.window;
 import js.Browser.navigator;
 import pancake.Navigator;
+import pancake.Native;
 
 /**
  * ...
@@ -79,7 +80,8 @@ class Support {
     }
     
     public function GAMEPAD(): Bool {
-        return (Navigator.getGamepads != null || Navigator.webkitGetGamepads != null || Navigator.webkitGamepads != null);
+        if (Windows != null) return (UWPGamepadInput != null);
+        else return (Navigator.getGamepads != null || Navigator.webkitGetGamepads != null || Navigator.webkitGamepads != null);
     }
 }
 
@@ -105,7 +107,8 @@ class Browser {
     public var SAMSUNG_INTERNET: Bool = is("SamsungBrowser");
     public var SEAMONKEY: Bool = is("SeaMonkey");
     public var support: Support = new Support();
-	public function supports(feature: String): Bool {
+    
+    public function supports(feature: String): Bool {
         return Reflect.field(support, feature)();
     }
 }

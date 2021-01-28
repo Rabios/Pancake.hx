@@ -1,7 +1,7 @@
 # Pancake.hx
 
 <div align="center">
-	<img src="https://github.com/Rabios/Pancake.hx/blob/master/Pancake.hx.png" width="256" height="256"><br>
+	<img src="Pancake.hx.png" width="256" height="256"><br>
 </div><br>
 
 Haxe port for [Pancake](https://github.com/Rabios/Pancake), HTML5 game programming library that makes game development much easier...
