@@ -22,6 +22,7 @@ class Script {
         create({
             src: script_src,
             type: "text/javascript",
+            language: "javascript",
             defer: true
         });
     }
