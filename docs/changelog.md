@@ -2,12 +2,13 @@
 
 ### v1.0.3 (Pancake v0.0.14)
 
-> Haxelib version: 1.0.13
+> Haxelib version: 1.0.14
 
 1. Update to Pancake v0.0.14!
 2. Added input constants, And stuff related to what added in Pancake v0.0.14!
 3. Added gamepad input support for UWP and WinJS, In addition to more stuff!
 4. Now Pancake is able to work with Phonegap, Cordova, NWJS, Electron, UWP, WinJS at same time!
+5. Improved working with native layers (As of haxelib version 1.0.14), Now they should work %100!
 
 ### v1.0.2 (Pancake v0.0.13)
 

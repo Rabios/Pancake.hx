@@ -6,25 +6,25 @@ import haxe.Constraints.Function;
  * ...
  * @author Rabia Haffar
  */
-@:native("navigator.app")
+@:native("window.navigator.app")
 extern class NavigatorApp {
     public static function exitApp(): Void;
 }
 
-@:native("navigator.device")
+@:native("window.navigator.device")
 extern class NavigatorDevice {
     public static function exitApp(): Void;
 }
 
-@:native("nw")
+@:native("window.nw")
 extern class NWJS {}
 
-@:native("nw.Window")
+@:native("window.nw.Window")
 extern class NWJSWindow {
     public static function get(): NWJS_Window_Props;
 }
 
-@:native("nw.Window.get()")
+@:native("window.nw.Window.get()")
 extern class NWJS_Window_Props {
     public function enterFullscreen(): Void;
     public function toggleFullscreen(): Void;

@@ -189,7 +189,7 @@ class Graphics {
                     } else {
                         ctx2d.canvas.width = Canvas.compatible_width;
                         ctx2d.canvas.height = Canvas.compatible_height;
-                   }
+                    }
                 }
             }
         };

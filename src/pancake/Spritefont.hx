@@ -45,7 +45,7 @@ class Spritefont {
             char_img_context.globalAlpha = 1;
             char_img_context.drawImage(Pancake.fonts[spritefont_index].image, 0, 0);
             char_img_context.restore();
-             if (char_rect != null) Pancake.graphics.drawImage(cast(char_img_context.canvas, Image), char_rect.x, char_rect.y, char_rect.w, char_rect.h, x + (i * (font_size + spc)), y, font_size, font_size);
+            if (char_rect != null) Pancake.graphics.drawImage(cast(char_img_context.canvas, Image), char_rect.x, char_rect.y, char_rect.w, char_rect.h, x + (i * (font_size + spc)), y, font_size, font_size);
             #end
         }
         #if PANCAKE_WEBGL
