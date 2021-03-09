@@ -1,5 +1,11 @@
 # CHANGELOG
 
+### v1.0.5 (Pancake v0.0.15)
+
+> Haxelib version: 1.0.15
+
+Fixed gamepad input on UWP platform, As done with Pancake v0.0.15!
+
 ### v1.0.3 (Pancake v0.0.14)
 
 > Haxelib version: 1.0.14

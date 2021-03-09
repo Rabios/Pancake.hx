@@ -379,7 +379,7 @@ class Input {
                 var gamepad_state: UWPGamepadState = UWPGamepadInput.gamepads[gamepad_index].getCurrentReading();
                 if (gamepad_button == "leftTrigger") return (gamepad_state.leftTrigger >= gamepad_threshold);
                 if (gamepad_button == "rightTrigger") return (gamepad_state.rightTrigger >= gamepad_threshold);
-                else return (gamepad_state.buttons == Reflect.field(gamepad_state.buttons, gamepad_button));
+                else return ((gamepad_state.buttons & Reflect.field(gamepad_state.buttons, gamepad_button)) != 0);
             }
         }
         return false;
@@ -398,7 +398,7 @@ class Input {
                 var gamepad_state: UWPGamepadState = UWPGamepadInput.gamepads[gamepad_index].getCurrentReading();
                 if (gamepad_button == "leftTrigger") return (gamepad_state.leftTrigger >= gamepad_threshold);
                 if (gamepad_button == "rightTrigger") return (gamepad_state.rightTrigger >= gamepad_threshold);
-                else return (gamepad_state.buttons == Reflect.field(gamepad_state.buttons, gamepad_button));
+                else return ((gamepad_state.buttons & Reflect.field(gamepad_state.buttons, gamepad_button)) != 0);
             }
         }
         return false;
