@@ -53,7 +53,6 @@ import js.html.CanvasElement;
 import pancake.Canvas;
 import pancake.Context;
 import pancake.Graphics;
-import pancake.Mode;
 
 #if PANCAKE_VIDEO
 import js.html.VideoElement;

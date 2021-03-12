@@ -15,7 +15,6 @@ import js.html.webgl.Shader;
 import js.html.Float32Array;
 import js.lib.Math;
 import pancake.Pancake;
-import pancake.Mode;
 import pancake.Native;
 
 /**
@@ -61,7 +60,7 @@ class Random {
     }
     
     public function RGBA(): String {
-        return ("rgba(" + Std.random(255) + "," + Std.random(255) + "," + Std.random(255) + "," + Std.random(255) + ")");
+        return ("rgba(" + Std.random(255) + "," + Std.random(255) + "," + Std.random(255) + "," + Math.random() + ")");
     }
     
     public function HSL(): String {
@@ -91,9 +90,9 @@ class Random {
 }
 
 class Graphics {
-    public var FILL: Int = Mode.FILL;
-    public var STROKE: Int = Mode.STROKE;
-    public var BOTH: Int = Mode.BOTH;
+    public var FILL: Int = 1;
+    public var STROKE: Int = 2;
+    public var BOTH: Int = 3;
     public var fits: Bool = false;
     public var scissor: Bool = true;
     public var random: Random = new Random();
@@ -625,7 +624,7 @@ class Graphics {
     
     public function RGBA(r: Int, g: Int, b: Int, a: Int): EitherType<String, Array<Float>> {
         #if PANCAKE_CANVAS2D
-        return "rgb(" + r + "," + g + "," + b + "," + a + ")";
+        return "rgb(" + r + "," + g + "," + b + "," + a / 255 + ")";
         #elseif PANCAKE_WEBGL
         return [r / 255, g / 255, b / 255, a / 255];
         #end

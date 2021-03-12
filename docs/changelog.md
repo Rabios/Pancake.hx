@@ -2,9 +2,11 @@
 
 ### v1.0.5 (Pancake v0.0.15)
 
-> Haxelib version: 1.0.15
+> Haxelib version: 1.0.16
 
-Fixed gamepad input on UWP platform, As done with Pancake v0.0.15!
+1. Fixed gamepad input on UWP platform, As done with Pancake v0.0.15!
+2. Fixed alpha setting for `pancake.graphics.random.RGBA` and `pancake.graphics.RGBA` for `CanvasRenderingContext2D` backend!
+3. Removed `Mode` enum, Use `pancake.graphics.<Mode>` as same in JavaScript version!
 
 ### v1.0.3 (Pancake v0.0.14)
 
