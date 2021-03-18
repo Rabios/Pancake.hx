@@ -410,17 +410,17 @@ class Input {
             var gamepad: Gamepad = getGamepads()[gamepad_index];
             if (gamepad != null) {
                 if (gamepad_analog == GAMEPAD_MOVE_ANALOG) {
-                    if (gamepad.axes[1] <= analog_direction) gamepad_move_vertical_direction = "UP";
-                    if (gamepad.axes[1] >= analog_direction) gamepad_move_vertical_direction = "DOWN";
-                    if (gamepad.axes[0] <= analog_direction) gamepad_move_horizontal_direction = "LEFT";
-                    if (gamepad.axes[0] >= analog_direction) gamepad_move_horizontal_direction = "RIGHT";
+                    if (gamepad.axes[3] <= analog_direction) gamepad_move_vertical_direction = "UP";
+                    if (gamepad.axes[3] >= analog_direction) gamepad_move_vertical_direction = "DOWN";
+                    if (gamepad.axes[2] <= analog_direction) gamepad_move_horizontal_direction = "LEFT";
+                    if (gamepad.axes[2] >= analog_direction) gamepad_move_horizontal_direction = "RIGHT";
                 }
             
                 if (gamepad_analog == GAMEPAD_CAMERA_ANALOG) {
-                    if (gamepad.axes[3] <= analog_direction) gamepad_camera_vertical_direction = "UP";
-                    if (gamepad.axes[3] >= analog_direction) gamepad_camera_vertical_direction = "DOWN";
-                    if (gamepad.axes[2] <= analog_direction) gamepad_camera_horizontal_direction = "LEFT";
-                    if (gamepad.axes[2] >= analog_direction) gamepad_camera_horizontal_direction = "RIGHT";
+                    if (gamepad.axes[1] <= analog_direction) gamepad_camera_vertical_direction = "UP";
+                    if (gamepad.axes[1] >= analog_direction) gamepad_camera_vertical_direction = "DOWN";
+                    if (gamepad.axes[0] <= analog_direction) gamepad_camera_horizontal_direction = "LEFT";
+                    if (gamepad.axes[0] >= analog_direction) gamepad_camera_horizontal_direction = "RIGHT";
                 }
             }
         } else {
@@ -428,17 +428,17 @@ class Input {
             if (gamepad != null) {
                 var gamepad_state: UWPGamepadState = gamepad.getCurrentReading();
                 if (gamepad_analog == GAMEPAD_MOVE_ANALOG) {
-                    if (gamepad_state.leftThumbstickY >= analog_direction) gamepad_move_vertical_direction = "UP";
-                    if (gamepad_state.leftThumbstickY <= analog_direction) gamepad_move_vertical_direction = "DOWN";
-                    if (gamepad_state.leftThumbstickX <= analog_direction) gamepad_move_horizontal_direction = "LEFT";
-                    if (gamepad_state.leftThumbstickX >= analog_direction) gamepad_move_horizontal_direction = "RIGHT";
+                    if (gamepad_state.rightThumbstickY >= analog_direction) gamepad_move_vertical_direction = "UP";
+                    if (gamepad_state.rightThumbstickY <= analog_direction) gamepad_move_vertical_direction = "DOWN";
+                    if (gamepad_state.rightThumbstickX <= analog_direction) gamepad_move_horizontal_direction = "LEFT";
+                    if (gamepad_state.rightThumbstickX >= analog_direction) gamepad_move_horizontal_direction = "RIGHT";
                 }
 
                 if (gamepad_analog == GAMEPAD_CAMERA_ANALOG) {
-                    if (gamepad_state.rightThumbstickY >= analog_direction) gamepad_camera_vertical_direction = "UP";
-                    if (gamepad_state.rightThumbstickY <= analog_direction) gamepad_camera_vertical_direction = "DOWN";
-                    if (gamepad_state.rightThumbstickX <= analog_direction) gamepad_camera_horizontal_direction = "LEFT";
-                    if (gamepad_state.rightThumbstickX >= analog_direction) gamepad_camera_horizontal_direction = "RIGHT";
+                    if (gamepad_state.leftThumbstickY >= analog_direction) gamepad_camera_vertical_direction = "UP";
+                    if (gamepad_state.leftThumbstickY <= analog_direction) gamepad_camera_vertical_direction = "DOWN";
+                    if (gamepad_state.leftThumbstickX <= analog_direction) gamepad_camera_horizontal_direction = "LEFT";
+                    if (gamepad_state.leftThumbstickX >= analog_direction) gamepad_camera_horizontal_direction = "RIGHT";
                 }
             }
         }
