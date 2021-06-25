@@ -4,8 +4,8 @@
     "license"      : "MIT",
     "tags"         : [ "javascript", "js", "keyboard", "webgl", "mobile", "canvas", "inspiration", "touch", "localstorage", "desktop", "xbox", "audio", "mouse", "collision-detection", "game-framework", "playstation", "canvas2d", "gamepad-api", "successor" ],
     "description"  : "Haxe port of awesome HTML5 game framework Pancake!",
-    "version"      : "1.0.17",
-    "releasenote"  : "See https://github.com/Rabios/Pancake.hx/blob/master/docs/changelog.md",
+    "version"      : "1.0.18",
+    "releasenote"  : "Improvements and Tizen support!",
     "classPath"    : "src",
     "contributors" : [ "Rabios" ],
     "dependencies" : {}

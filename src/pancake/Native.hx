@@ -102,3 +102,15 @@ extern class UWPGamepadState {
     public var rightTrigger: Float;
     public var timestamp: Float;
 }
+
+@:native("window.tizen")
+extern class Tizen {}
+
+@:native("window.tizen.application")
+extern class TizenApp {
+    public static function getCurrentApplication(): TizenAppObj;
+}
+
+extern class TizenAppObj {
+    public function exit(): Void;
+}

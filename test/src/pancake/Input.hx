@@ -18,7 +18,7 @@ import pancake.Native;
  */
 @:native("Accelerometer")
 extern class Accelerometer {
-    public function new(properties: Dynamic): Void {};
+    public function new(properties: Dynamic): Void;
     public var onreading: haxe.Constraints.Function;
     public function start(): Any;
 }

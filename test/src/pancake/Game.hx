@@ -27,6 +27,11 @@ class Game {
             NavigatorApp.exitApp();
         } else if (NavigatorDevice != null) {
             NavigatorDevice.exitApp();
+        } else if (Tizen != null) {
+            var app: TizenAppObj = TizenApp.getCurrentApplication();
+            if (app != null) {
+                app.exit();
+            }
         } else {
             window.close();
         }

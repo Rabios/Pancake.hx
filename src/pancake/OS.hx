@@ -36,7 +36,8 @@ class OS {
     public var MINIX_NEO_X5: Bool = (userAgent.indexOf("NEO-X5") > -1);
     public var APPLE_TV: Bool = (userAgent.indexOf("AppleTV") > -1);
     public var KINDLE: Bool = (userAgent.indexOf("Kindle") > -1);
-    
+    public var TIZEN: Bool = (userAgent.indexOf("Tizen") > -1);
+
     public function is(useragent: String): Bool {
         return (userAgent.indexOf(useragent) > -1);
     }

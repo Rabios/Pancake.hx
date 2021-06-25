@@ -1,8 +1,14 @@
 # CHANGELOG
 
+### v1.0.6 (Pancake v0.0.16)
+
+> haxelib version: 1.0.18
+
+Improvements and Tizen support!
+
 ### v1.0.5 (Pancake v0.0.15)
 
-> Haxelib version: 1.0.17
+> haxelib version: 1.0.17
 
 1. Fixed gamepad input on UWP platform, As done with Pancake v0.0.15!
 2. Fixed alpha setting for `pancake.graphics.random.RGBA` and `pancake.graphics.RGBA` for `CanvasRenderingContext2D` backend!
@@ -11,7 +17,7 @@
 
 ### v1.0.3 (Pancake v0.0.14)
 
-> Haxelib version: 1.0.14
+> haxelib version: 1.0.14
 
 1. Update to Pancake v0.0.14!
 2. Added input constants, And stuff related to what added in Pancake v0.0.14!
@@ -21,7 +27,7 @@
 
 ### v1.0.2 (Pancake v0.0.13)
 
-> Haxelib version: 1.0.11
+> haxelib version: 1.0.11
 
 1. Improvements on design on port!
 2. Reverted additions of `Pancake.graphics.setMode` and `Pancake.graphics.disableTint` and `Pancake.graphics.setTint`
@@ -33,7 +39,7 @@
 
 ### v1.0.1 (Pancake v0.0.13)
 
-> Haxelib version: 1.0.7
+> haxelib version: 1.0.7
 
 1. Now if your are using Pancake with Cordova or Phonegap it's possible to close game natively instead of close window...
 2. Fixed fullscreen functionality!
